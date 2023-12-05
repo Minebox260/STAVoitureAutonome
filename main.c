@@ -146,12 +146,25 @@ int setupUDP(int argc, char * argv[], struct sockaddr_in * server_adr, struct so
     socklen_t len_addr = sizeof(*client_adr);
     char recv_buff[MAX_OCTETS+1];
     char * ptr;
+    char * client_adr_str;
     int code;
     int nb_tries = 0;
+    char hostbuffer[MAXOCTETS];
+    struct hostent *host_entry;
     if (argc < 3){
       printf("Utilisation : ./client.exe <IP Serveur> <Port Serveur>");
       exit(EXIT_FAILURE);
     }
+
+    // Récupération de l'adresse IP de la machine
+
+    // To retrieve hostname
+    gethostname(hostbuffer, sizeof(hostbuffer));
+    strcat(hostbuffer, ".local");
+    // To retrieve host information
+    host_entry = gethostbyname(hostbuffer);
+    client_adr_str = inet_ntoa(*((struct in_addr*) host_entry->h_addr_list[0]));
+    printf("STARTING CLIENT ON %s\n", client_adr_str);
     
     sd = socket(AF_INET, SOCK_DGRAM, 0); // Créer une socket UDP
     CHECK_ERROR(sd, -1, "Erreur lors de la création de la socket\n");
@@ -163,7 +176,7 @@ int setupUDP(int argc, char * argv[], struct sockaddr_in * server_adr, struct so
 
     client_adr->sin_family = AF_INET;
     client_adr->sin_port = htons(0);
-    client_adr->sin_addr.s_addr = inet_addr("0.0.0.0");
+    client_adr->sin_addr.s_addr = inet_addr(client_adr_str);
 
     erreur = bind(sd,(const struct sockaddr *)client_adr, len_addr);
     CHECK_ERROR(erreur, -1, "Erreur lors du bind de socket\n");
