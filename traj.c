@@ -98,3 +98,79 @@ void Trajectory(struct PARAMS *params, Point point_final) {
   params->last_goal = params->chemin[0];
   params->indice_next_goal = 1;
 }
+
+
+void advanced_Trajectory(struct PARAMS *params, Point point_final) {
+  int n = params->nb_points; // Nombre de points
+  params->chemin = malloc(params->nb_points * sizeof(struct Point));
+  Point depart;
+  depart.x = params->pos->x;
+  depart.y = params->pos->y;
+  int ind;
+  // Point points[n];
+  Point ordre;
+  Point final;
+  int indice = 1;
+  int ix_pos_final;
+  int indice_pos_init;
+  ordre.x = point_final.x;
+  ordre.y = point_final.y;
+
+  // Déterminer le point le plus proche de l'ordre
+  double dist_min = distance(params->carte_index[0], ordre);
+  for (int i = 0; i < n; i++) {
+    if (distance(params->carte_index[i], ordre) < dist_min) {
+      dist_min = distance(params->carte_index[i], ordre);
+      final.x = params->carte_index[i].x;
+      final.y = params->carte_index[i].y;
+      final.ind = params->carte_index[i].ind;
+      ix_pos_final = i;
+    }
+  }
+  ////////////////////////////////////////////////////////
+
+  // Déterminer le point le plus proche de la position initiale
+
+  printf(" Pos final :  %d %d \n", final.x, final.y);
+  double minimum = distance(params->carte_index[0], depart);
+  for (int j = 0; j < n; j++) {
+    // Déterminer le point le plus proche de la position initiale
+    if (distance(params->carte_index[j], depart) < minimum) {
+      indice_pos_init = j;
+      minimum = distance(params->carte_index[j], depart);
+      depart.ind = params->carte_index[j].ind;
+    }
+  }
+  /////////////////////////////////////////////////////////////
+
+  printf("---Calcul de trajectoire---\n");
+  printf("Point Initial : %d, Point Final : %d\n", indice_pos_init,
+         ix_pos_final);
+
+  params->chemin[0].x =
+      params->carte_index[indice_pos_init]
+          .x; // premier point du chemin = point de la carte correspondant à la
+              // position actuelle de la voiture
+  params->chemin[0].y = params->carte_index[indice_pos_init].y;
+  // génerer le chemin!
+  ind = indice_pos_init;
+
+  while (ind != ix_pos_final) {
+    // Sens de parcours qui dépend de la carte
+    if (params->carte_index[ind].ind ==
+            0 || // 0 correspond à l'index pour le cercle
+        params->carte_index[ind].ind == final.ind ||
+        params->carte_index[ind].ind == depart.ind) {
+      printf("Point (%d) : %d,%d\n", ind, params->carte[ind].x,
+             params->carte[ind].y);
+      params->chemin[indice].x = params->carte_index[ind].x;
+      params->chemin[indice].y = params->carte_index[ind].y;
+      indice++;
+    }
+    ind++;
+    ind = ind % n;
+  }
+  params->next_goal = params->chemin[1];
+  params->last_goal = params->chemin[0];
+  params->indice_next_goal = 1;
+}
