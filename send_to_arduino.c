@@ -79,7 +79,7 @@ int send_code_to_arduino(int port, int16_t code) {
 		if (strstr(received_data, "ACK") != NULL) {
 			ack = 1;
 			
-			printf("\nRECEIVED ACK\n\n");
+			printf("RECEIVED ACK\n");
 			return 1;
 		}
 		
@@ -94,6 +94,8 @@ int send_code_to_arduino(int port, int16_t code) {
 }
 
 void send_next_point_to_arduino(int port, Point next, Point current) {
+	printf("\n---START COMM ARDUINO---\n");
+	
 	int codeOutput = send_code_to_arduino(port, 1);
 	if(codeOutput==0) {
 		printf("no ACK received ERROR\n");
@@ -105,8 +107,8 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 		
 	
 	int32_t data[4] = {(int32_t)current.x, (int32_t)current.y, (int32_t)next.x, (int32_t)next.y};
-	printf("current: %d %d\n",data[0], data[1]);
-	printf("\n---POINTS SENT---\n");
+	//printf("current: %d %d\n",data[0], data[1]);
+	printf("---POINTS SENT---\n");
 	for(int32_t i=0; i < 4; i++) {
 		char * intptr = (char*)&data[i];
 		for(int32_t j = 0; j < sizeof(int32_t); j++) {
@@ -126,16 +128,20 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 		printf("\n");*/
 	}
 	printf("\n");	
-	printf("sent points to ARDUINO\n\n");
+	//printf("sent points to ARDUINO\n");
+	
 	
 	//wait for debug return
-	time_t start, now;
-	double duration;
-	start = time(NULL);
-	int timeout = 5;
+	long duration; //in milliseconds
+	struct time_val start, end;
+	gettimeofday(&start, NULL);
+	float timeout = 0.1;
 	uint8_t buffer[16];
+	for (int i; i < 16; i++) {
+		buffer[i] = 0;
+	}
 	int count = 0;
-	printf("\n---POINTS RECEIVED FOR VERIFICATION---\n");
+	printf("---POINTS RECEIVED FOR VERIFICATION---\n");
 	while(1) {
 		if (serialDataAvail(port) > 0) {
 			char received_byte = serialGetchar(port);
@@ -143,13 +149,15 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 			buffer[count] = received_byte;
 			count++;
 		}
-		now = time(NULL);
-		duration = difftime(now,start);
+		gettimeofday(&end, NULL);
+		duration = (end.tv_sec - start.tv_sec) * 1000LL + (end.tv_usec - start.tv_usec) / 1000LL;
+		printf("%ld\n", duration);
 		if (duration >= timeout) {
 			//printf("\nTIMEOUT\n");
 			break;
 		}
-	}/*
+	}
+	printf("\n");
 	int32_t ndata[4];
 	for(int i = 0; i<4; i++) {
 		int firstIx = 4*i;
@@ -158,7 +166,7 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
         }
       
 	printf("VERIFICATION\ncurrent - x: %d, y: %d\n", ndata[0], ndata[1]);
-*/
+
 }
 
 

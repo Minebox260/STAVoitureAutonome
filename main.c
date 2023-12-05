@@ -126,13 +126,15 @@ void *advance(void* arg) {
         sleep(1);
     }
     while (1) {
+        printf("\n---NEXT ITERATION---\n");
+
         //printf("current x: %d, y: %d\n",params->pos->x,params->pos->y);
         //put next point in params->next_goal
         calculate_next_point(params);
         
         send_next_point_to_arduino(params->portArduino, params->next_goal, params->currentPoint);
         //wait for arduino to do a loop
-        sleep(5);
+        //sleep(5);
     }
     
 }
@@ -269,7 +271,7 @@ int main(int argc, char *argv[]) {
             return 1;
         }
     }
-            
+    
     //recevoir la localisation des marvelminds continuellement
     if (pthread_create(&thread_id_get_location, NULL, get_location, (void*)params) != 0) {
         perror("pthread_create");

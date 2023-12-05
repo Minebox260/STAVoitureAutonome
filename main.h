@@ -7,12 +7,10 @@
 
 #define _GNU_SOURCE
 #include <sched.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <time.h>
 #include <pthread.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <stdbool.h>
 #include <string.h>
 #include <netinet/in.h>

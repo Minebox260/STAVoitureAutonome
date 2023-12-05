@@ -159,7 +159,7 @@ void setup() {
   //attachInterrupt(digitalPinToInterrupt(enca[1]),readEncoder<1>,RISING);
   
 }
-
+  
 
 
 void loop() {
@@ -167,7 +167,7 @@ void loop() {
   //___________________________________________
   //Serial.println("\nstart loop");
   //lire le code
-  blink(1,500);
+  blink(1,150);
   
   if (Serial.available() == 0) {
     //Serial.println("nothing received");
@@ -181,13 +181,13 @@ void loop() {
     case 0:
 
     case 1:
-      blink(10,100);
+      //blink(10,100);
       
       acknowledge(1);
       
       while (Serial.available() < (4 * sizeof(int32_t))) {
         //Serial.println(Serial.available());
-        blink(1,50);
+        blink(1,25);
 
       }
       Serial.readBytes(buffer, 16);
@@ -204,7 +204,7 @@ void loop() {
       y1 = data[3];
       
       //debug code for checking the integers constructed
-      /*
+      
       char * intptr = (char*)&x0;
       for(int32_t j = 0; j < sizeof(int32_t); j++) {
         //send each byte as a char seperately
@@ -225,7 +225,7 @@ void loop() {
         //send each byte as a char seperately
         Serial.write((uint8_t*)(intptr+j), 1);
       }
-      */
+      
       
   }//end switch
 
