@@ -95,23 +95,24 @@ void* send_next_point_to_arduino(void* arg) {
 */
 
 void calculate_next_point(struct PARAMS * params) {
-    clock_t start;
     Point actuel = params->currentPoint;
     Point last = params->last_goal;
     Point next = params->next_goal;
+    printf("current x: %d, y: %d\n", actuel.x, actuel.y);
     
     //EXTRAIRE LE PROCHAIN POINT DE TRAJECTOIRE
     if (distance(actuel, last) > distance(actuel, next)){
         params->last_goal = next;
         printf("next goal x: %d, y: %d\n",next.x,next.y);
+        
         params->indice_next_goal ++;
         params->next_goal = params->chemin[params->indice_next_goal];
     }
     else {
         //point rests the same
-        //printf("next goal hasn't changed\n");
-        start = clock();
-        attendre(start, 1000);
+        printf("next goal hasn't changed\n");
+        //start = clock();
+        //attendre(start, 1000);
     }
         
 }
@@ -123,8 +124,6 @@ void *advance(void* arg) {
         printf("ENTER A MISSION PLEASE!\n");
         sleep(1);
     }
-    
-        
     while (1) {
         //printf("current x: %d, y: %d\n",params->pos->x,params->pos->y);
         //put next point in params->next_goal
@@ -133,10 +132,10 @@ void *advance(void* arg) {
         send_next_point_to_arduino(params->portArduino, params->next_goal, params->currentPoint);
         //wait for arduino to do a loop
         sleep(5);
-        
     }
     
 }
+
 
 int setupUDP(int argc, char * argv[], struct sockaddr_in * server_adr, struct sockaddr_in * client_adr) {
     int sd;                    // Descripteur de la socket
@@ -147,7 +146,7 @@ int setupUDP(int argc, char * argv[], struct sockaddr_in * server_adr, struct so
     int code;
     int nb_tries = 0;
     if (argc < 3){
-      printf("Utilisation : ./client.exe <IP Serveur> <Port Serveur> <Port Marvelmind (default: /dev/ttyACM2)>");
+      printf("Utilisation : ./client.exe <IP Serveur> <Port Serveur>");
       exit(EXIT_FAILURE);
     }
     
@@ -213,6 +212,7 @@ int main(int argc, char *argv[]) {
     //bloquer threads de communication et de marvelmind en mode debug
     if (DEBUG != 1) {
         sd = setupUDP(argc, argv, &server_adr, &client_adr);
+    } else if (DEBUG_MM != 1) {
         hedge = setupHedge(argc, argv);
     } else {
         sd = 0; //just to suppress warnings

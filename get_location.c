@@ -22,9 +22,14 @@ void semCallback()
 
 struct MarvelmindHedge * setupHedge(int argc, char * argv[]) {
     // get port name from command line arguments (if specified)
+    printf("\nSETTING UP HEDGE\n\n");
     const char * ttyFileName;
-    if (argc == 4) ttyFileName = argv[3];
-    else ttyFileName = DEFAULT_TTY_FILENAME;
+    if (argc == 3) {
+        ttyFileName = "/dev/ttyACM0";
+    }
+    else {
+        printf("PROVIDE MISSIONX, MISSIONY\n");
+    }
 
     // Init
     struct MarvelmindHedge * hedge = createMarvelmindHedge();
@@ -39,6 +44,8 @@ struct MarvelmindHedge * setupHedge(int argc, char * argv[]) {
     startMarvelmindHedge(hedge);
   
     sem = sem_open(DATA_INPUT_SEMAPHORE, O_CREAT, 0777, 0);
+    
+    printf("\nSETUP HEDGE FINISHED\n\n");
 
     /*//sleep (3);
     if (clock_gettime(CLOCK_REALTIME, &ts) == -1)
@@ -54,7 +61,6 @@ struct MarvelmindHedge * setupHedge(int argc, char * argv[]) {
 
 void * get_location (void* arg) {
     struct PARAMS * params = (struct PARAMS*)arg;
-    struct MarvelmindHedge * hedge = params->hedge;
     struct PositionValue * mobPos = (struct PositionValue*)malloc(sizeof(struct PositionValue)); //position du mobile
     mobPos->x = 0;
     mobPos->y = 0;
@@ -64,9 +70,10 @@ void * get_location (void* arg) {
         start = clock();
         
         //debug mode without marvelminds
-        if (DEBUG != 1) {
-            getPositionFromMarvelmindHedge(hedge, mobPos);
-            free(params->pos);
+        if (DEBUG_MM != 1) {
+            getPositionFromMarvelmindHedge(params->hedge, mobPos);
+            //printf("\npos x: %d\n\n",mobPos->x);
+            //free(params->pos);
             params->pos = mobPos;
             params->currentPoint.x = mobPos->x;
             params->currentPoint.y = mobPos->y;

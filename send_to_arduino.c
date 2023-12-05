@@ -105,7 +105,7 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 		
 	
 	int32_t data[4] = {(int32_t)current.x, (int32_t)current.y, (int32_t)next.x, (int32_t)next.y};
-	
+	printf("current: %d %d\n",data[0], data[1]);
 	for(int32_t i=0; i < 4; i++) {
 		char * intptr = (char*)&data[i];
 		for(int32_t j = 0; j < sizeof(int32_t); j++) {

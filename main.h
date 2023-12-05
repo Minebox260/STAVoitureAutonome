@@ -3,6 +3,7 @@
 
 #define MAX_OCTETS 1024
 #define DEBUG 1 //if 1 we are in debug mode = no server communication
+#define DEBUG_MM 0
 
 #define _GNU_SOURCE
 #include <sched.h>
