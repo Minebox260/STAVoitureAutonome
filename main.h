@@ -37,8 +37,6 @@
 //////////////////////////////////////////7
 //////////UNCOMMENT ON RASPBERRY///////////
 ///////////////////////////////////////////
-#include <stdio.h>
-#include <stdlib.h>
 #include <openssl/rand.h>
 #include <openssl/des.h>
 #include <openssl/evp.h>
