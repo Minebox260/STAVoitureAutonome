@@ -149,7 +149,7 @@ int setupUDP(int argc, char * argv[], struct sockaddr_in * server_adr, struct so
     char * client_adr_str;
     int code;
     int nb_tries = 0;
-    char hostbuffer[MAXOCTETS];
+    char hostbuffer[MAX_OCTETS];
     struct hostent *host_entry;
     if (argc < 3){
       printf("Utilisation : ./client.exe <IP Serveur> <Port Serveur>");

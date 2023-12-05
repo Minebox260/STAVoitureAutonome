@@ -26,7 +26,6 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
-#include <time.h>
 #include "marvelmind.h"
 #include <unistd.h>
 #include <termios.h>

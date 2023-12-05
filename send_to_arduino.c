@@ -133,9 +133,9 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 	
 	//wait for debug return
 	long duration; //in milliseconds
-	struct time_val start, end;
-	gettimeofday(&start, NULL);
-	float timeout = 0.1;
+	time_t start, now;
+	start = time(NULL);
+	int timeout = 1;
 	uint8_t buffer[16];
 	for (int i; i < 16; i++) {
 		buffer[i] = 0;
@@ -149,9 +149,8 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 			buffer[count] = received_byte;
 			count++;
 		}
-		gettimeofday(&end, NULL);
-		duration = (end.tv_sec - start.tv_sec) * 1000LL + (end.tv_usec - start.tv_usec) / 1000LL;
-		printf("%ld\n", duration);
+		now = time(NULL);
+		duration = difftime(now,start);
 		if (duration >= timeout) {
 			//printf("\nTIMEOUT\n");
 			break;
