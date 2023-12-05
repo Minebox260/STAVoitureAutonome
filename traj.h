@@ -17,4 +17,6 @@ int trouverPointPlusProche(Point points[], int n, int pointInit,
 
 void Trajectory(struct PARAMS * params, Point point_final); //Fonction pour avoir la liste des// points à parcourir
 
+void advanced_Trajectory(struct PARAMS *params, Point point_final);
+
 #endif

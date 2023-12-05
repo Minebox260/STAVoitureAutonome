@@ -107,6 +107,7 @@ void calculate_next_point(struct PARAMS * params) {
         
         params->indice_next_goal ++;
         params->next_goal = params->chemin[params->indice_next_goal];
+        printf("found next goal in params\n");
     }
     else {
         //point rests the same

@@ -55,6 +55,7 @@
 typedef struct Point {
   int x;
   int y;
+  int ind;
 } Point;
 
 //arg pour fonction envoyer_donnees
@@ -66,6 +67,7 @@ struct PARAMS{
     struct sockaddr_in * server_adr;
     struct sockaddr_in * client_adr;
     struct Point * carte; //la carte
+    struct Point * carte_index; //carte pour les parkings
     int nb_points; //nombre points de la carte
     struct MarvelmindHedge * hedge;
     struct Point * chemin;
@@ -84,3 +86,4 @@ void *advance(void* arg);
 int setupUDP(int argc, char * argv[], struct sockaddr_in * server_adr, struct sockaddr_in * client_adr);
 
 #endif
+    

@@ -4,6 +4,12 @@
 // Calcule la distance entre deux points en 3D
 
 double distance(Point p1, Point p2) {
+  /*if(p1.x == NULL) {
+    printf("p1 is null\n");
+  }
+  printf("calculating distance\n");
+  printf("p1 - x: %d, y: %d\n", p1.x, p1.y);
+  printf("p2 - x: %d, y: %d\n", p2.x, p2.y);*/
   int dx = p1.x - p2.x;
   int dy = p1.y - p2.y;
   return sqrt(dx * dx + dy * dy);

@@ -49,6 +49,7 @@ int extract_points(struct PARAMS * params) {
 
     params->carte = points;
     params->nb_points = lines;
+    
     return 0;
 }
 

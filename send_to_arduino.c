@@ -106,6 +106,7 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 	
 	int32_t data[4] = {(int32_t)current.x, (int32_t)current.y, (int32_t)next.x, (int32_t)next.y};
 	printf("current: %d %d\n",data[0], data[1]);
+	printf("\n---POINTS SENT---\n");
 	for(int32_t i=0; i < 4; i++) {
 		char * intptr = (char*)&data[i];
 		for(int32_t j = 0; j < sizeof(int32_t); j++) {
@@ -125,26 +126,39 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 		printf("\n");*/
 	}
 	printf("\n");	
-	printf("sent points to ARDUINO\n");
+	printf("sent points to ARDUINO\n\n");
 	
 	//wait for debug return
 	time_t start, now;
 	double duration;
 	start = time(NULL);
 	int timeout = 5;
+	uint8_t buffer[16];
+	int count = 0;
+	printf("\n---POINTS RECEIVED FOR VERIFICATION---\n");
 	while(1) {
 		if (serialDataAvail(port) > 0) {
 			char received_byte = serialGetchar(port);
 			printf("%02X ", received_byte);
+			buffer[count] = received_byte;
+			count++;
 		}
 		now = time(NULL);
 		duration = difftime(now,start);
 		if (duration >= timeout) {
-			printf("\nTIMEOUT\n");
+			//printf("\nTIMEOUT\n");
 			break;
 		}
-	}
-
+	}/*
+	int32_t ndata[4];
+	for(int i = 0; i<4; i++) {
+		int firstIx = 4*i;
+		ndata[i] = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
+			 + ((int32_t)buffer[firstIx+1] << 8) + ((int32_t)buffer[firstIx]));
+        }
+      
+	printf("VERIFICATION\ncurrent - x: %d, y: %d\n", ndata[0], ndata[1]);
+*/
 }
 
 
