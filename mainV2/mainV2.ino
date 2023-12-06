@@ -128,6 +128,7 @@ SimplePID pidAngle;
 
 //COMMUNICATION ARDUINO _ RASPBERRY
 int code = -1;
+int comm_established = 0;
 int32_t x0;
 int32_t x1;
 int32_t y0;
@@ -153,7 +154,7 @@ void setup() {
   }
   pinMode(LED_BUILTIN, OUTPUT);
 
-  pidAngle.setParams(5, 0.5, 0.15, 191);
+  pidAngle.setParams(2, 0, 0.5, 255);
   
   //attachInterrupt(digitalPinToInterrupt(enca[0]),readEncoder<0>,RISING);
   //attachInterrupt(digitalPinToInterrupt(enca[1]),readEncoder<1>,RISING);
@@ -167,15 +168,18 @@ void loop() {
   //___________________________________________
   //Serial.println("\nstart loop");
   //lire le code
-  blink(1,150);
   
-  if (Serial.available() == 0) {
+  blink(1,150);
+
+  if (Serial.available() == 0 && comm_established) {
     //Serial.println("nothing received");
     code = -1;
+  } else if (Serial.available() == 0 && !comm_established) {
+    return;
   } else { //+1 for terminator
     code = Serial.parseInt();
     emptySerial(); //get rid of extra input that might rest    
-  }  
+  }
 
   switch (code) {
     case 0:
@@ -184,6 +188,7 @@ void loop() {
       //blink(10,100);
       
       acknowledge(1);
+      comm_established = 1;
       
       while (Serial.available() < (4 * sizeof(int32_t))) {
         //Serial.println(Serial.available());
@@ -241,47 +246,24 @@ void loop() {
 
 
 
-/*
+
   //___________________________________________
   gyro.update();
-
-  if(cont <=2){
-    for(int i = 0; i<2; i++){
-      s_proximo[i] = trajectoire[cont][i];
-    }
-  }
 
   float delta_x = (x1 - x0);
   float delta_y = (y1 - y0);
   
-  //float delta_x = (s_proximo[0] - s_atual[0]);
-  //float delta_y = (s_proximo[1] - s_atual[1]);
+  float targetAngle = atan2(delta_y,delta_x);
+
+  //float targetAngle = 45;
+  /*Serial.print(" AngleTarget:");
+  Serial.println(targetAngle );
+
+
+  Serial.print(" AngleActuel:");
+  Serial.println(gyro.getAngleZ() );
   
-  //float targetAngle = atan2(delta_y,delta_x);
-  //targetAngle = (targetAngle*180)/PI;
-
-  //Serial.read();
-  //Serial.print("X:");
-  //Serial.print(gyro.getAngleX() );
-  //Serial.print(" Y:");
-  //Serial.print(gyro.getAngleY() );
-  //Serial.print(" Z:");
-  //Serial.println(gyro.getAngleZ() );
-
-
-  // set target position
-  int target[NMOTORS];
-  //target[0] = 750*sin(prevT/1e6);
-  //target[1] = -750*sin(prevT/1e6);
-
-  //int targetAngle = 180*sin(prevT/1e6);
-
-  int targetVelo[NMOTORS] = {40,40};
-
-  int targetAngle = 0;
-
-  //Serial.print(" Target:");
-  //Serial.println(targetAngle );
+  */
 
   // time difference
   long currT = micros();
@@ -289,19 +271,15 @@ void loop() {
   prevT = currT;
   
   
-  float velocity1 = (pos - posPrev)/deltaT;
-  posPrev = pos;
-  prevT = currT;
-  
 
 
   double pwr = pidAngle.evalu(gyro.getAngleZ(), targetAngle, deltaT);
   //Serial.print(" PWR:");
   //Serial.println(pwr );
-  moteur(50 + pwr,pwm[0],in1[0],in2[0]);
-  moteur(50 -pwr,pwm[1],in1[1],in2[1]);
+  moteur(30 + pwr,pwm[0],in1[0],in2[0]);
+  moteur(30 - pwr,pwm[1],in1[1],in2[1]);
   //Serial.println("end of loop");
-*/
+
 
 }
  

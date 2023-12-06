@@ -36,7 +36,7 @@
 //////////////////////////////////////////7
 //////////UNCOMMENT ON RASPBERRY///////////
 ///////////////////////////////////////////
-#include <openssl/rand.h>
+/*#include <openssl/rand.h>
 #include <openssl/des.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
@@ -44,7 +44,7 @@
 #include <openssl/x509.h>
 #include <openssl/pem.h>
 #include <openssl/bio.h>
-
+*/
 
 #define CHECK_ERROR(val1, val2, msg) \
     if (val1 == val2) {               \

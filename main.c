@@ -111,7 +111,9 @@ void calculate_next_point(struct PARAMS * params) {
     }
     else {
         //point rests the same
-        printf("next goal hasn't changed\n");
+        //printf("next goal hasn't changed\n");
+        printf("next x: %d, y: %d\n", next.x, next.y);
+
         //start = clock();
         //attendre(start, 1000);
     }

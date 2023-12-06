@@ -87,7 +87,7 @@ int send_code_to_arduino(int port, int16_t code) {
 		duration = difftime(current,start);
 		if (duration >= timeout) {
 			printf("TIMEOUT ack failed\n");
-			return -1;
+			return 2;
 		}
 	}
 	return 0;
@@ -97,10 +97,11 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 	printf("\n---START COMM ARDUINO---\n");
 	
 	int codeOutput = send_code_to_arduino(port, 1);
+
 	if(codeOutput==0) {
 		printf("no ACK received ERROR\n");
 		return;
-	} else if (codeOutput==-1) {
+	} else if (codeOutput==2) {
 		printf("ACK receive timed out ERROR\n");
 		return;
 	}
