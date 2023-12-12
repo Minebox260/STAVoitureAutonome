@@ -286,6 +286,7 @@ int main(int argc, char *argv[]) {
             delay(1);
         }
         printf("\n---CALCULATING TRAJECTORY---\n\n");
+        printf("Sending points to traj function:\nx: %d\ny: %d\n",params->currentPoint.x,params->currentPoint.y);
         Trajectory(params, *mission);
 
     }
