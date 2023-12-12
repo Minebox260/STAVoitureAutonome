@@ -4,6 +4,8 @@
 #define END_OF_LINE_X 1840
 #define END_OF_LINE_Y 3323
 
+#define DEBUG_STRAIGHT 1
+
 #define MAX_OCTETS 1024
 #define DEBUG 1 //if 1 we are in debug mode = no server communication
 #define DEBUG_MM 0
