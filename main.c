@@ -101,7 +101,13 @@ void calculate_next_point(struct PARAMS * params) {
     printf("current x: %d, y: %d\n", actuel.x, actuel.y);
     
     //EXTRAIRE LE PROCHAIN POINT DE TRAJECTOIRE
-    if (distance(actuel, last) > distance(actuel, next)){
+    //testing straight line
+	if (DEBUG_STRAIGHT == 1) {
+		next.x = END_OF_LINE_X;
+		next.y = END_OF_LINE_Y;
+        params->next_goal = next;
+	} 
+    else if (distance(actuel, last) > distance(actuel, next)){
         params->last_goal = next;
         printf("next goal x: %d, y: %d\n",next.x,next.y);
         
