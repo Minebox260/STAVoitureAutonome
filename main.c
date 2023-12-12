@@ -256,9 +256,9 @@ int main(int argc, char *argv[]) {
     params->client_adr = &client_adr;
     params->server_adr = &server_adr;
     
-    params->pos.x = 0;
-    params->pos.y = 0;
-    params->pos.z = 0;
+    params->pos->x = 0;
+    params->pos->y = 0;
+    params->pos->z = 0;
     
     params->currentPoint.x = 0;
     params->currentPoint.y = 0;
