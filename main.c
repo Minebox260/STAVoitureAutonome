@@ -119,6 +119,7 @@ void calculate_next_point(struct PARAMS * params) {
 
         //start = clock();
         //attendre(start, 1000);
+        //test
     }
         
 }
