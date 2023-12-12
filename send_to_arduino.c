@@ -176,6 +176,7 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
         }
       
 	printf("VERIFICATION\ncurrent - x: %d, y: %d\n", ndata[0], ndata[1]);
+	printf("VERIFICATION\nnext - x: %d, y: %d\n", ndata[2], ndata[3]);
 
 }
 
