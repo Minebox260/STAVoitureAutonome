@@ -78,6 +78,7 @@ int extract_points_index(struct PARAMS *params) {
       lines++;
   }
   lines++;
+  lines = lines - 11; //on ne compte pas les ligne où on indique l'index
   rewind(file);
 
   struct Point *points = (Point *)malloc(lines * sizeof(Point));
