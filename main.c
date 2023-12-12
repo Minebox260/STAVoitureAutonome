@@ -122,6 +122,11 @@ void calculate_next_point(struct PARAMS * params) {
 
 void *advance(void* arg) {
     struct PARAMS * params = (struct PARAMS*)arg;
+
+    if (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
+		return;
+	}
+
     while(params->next_goal.x == -1) {
         //envoyer code 106 au serveur == j'ai pas de mission
         printf("ENTER A MISSION PLEASE!\n");
