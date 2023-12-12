@@ -110,6 +110,12 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 		printf("ACK receive timed out ERROR\n");
 		return;
 	}
+	//testing straight line
+	if (DEBUG_STRAIGHT == 1) {
+		next.x = END_OF_LINE_X;
+		next.y = END_OF_LINE_Y;
+		printf("NEXT X: %d, NEXT Y: %d\n",next.x,next.y);
+	}
 	
 	int32_t data[4] = {(int32_t)current.x, (int32_t)current.y, (int32_t)next.x, (int32_t)next.y};
 	//printf("current: %d %d\n",data[0], data[1]);
