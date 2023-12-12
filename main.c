@@ -133,7 +133,7 @@ void *advance(void* arg) {
         if (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
 		    continue;
 	    }
-        
+
         printf("\n---NEXT ITERATION---\n");
 
         //printf("current x: %d, y: %d\n",params->pos->x,params->pos->y);
@@ -269,12 +269,23 @@ int main(int argc, char *argv[]) {
       exit(EXIT_FAILURE);
     }
     
+    //recevoir la localisation des marvelminds continuellement
+    if (pthread_create(&thread_id_get_location, NULL, get_location, (void*)params) != 0) {
+        perror("pthread_create");
+        return 1;
+    }
+
+
     //in debug mode we give the final mission directly
     if (DEBUG == 1) {
         if (argc < 2) {
             printf("DEBUG MODE: ENTER X AND Y OF MISSION PLEASE!\n");
         }
         struct Point * mission = parse_point(argv[1],argv[2]);
+        while (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
+            delay(1);
+        }
+        printf("\n---CALCULATING TRAJECTORY---\n\n");
         Trajectory(params, *mission);
 
     }
@@ -293,12 +304,6 @@ int main(int argc, char *argv[]) {
         }
     }
     
-    //recevoir la localisation des marvelminds continuellement
-    if (pthread_create(&thread_id_get_location, NULL, get_location, (void*)params) != 0) {
-        perror("pthread_create");
-        return 1;
-    }
-
     //avancer à l'aide de l'Arduino
     if (pthread_create(&thread_id_advance, NULL, advance, (void*)params) != 0) {
         perror("pthread_create");
