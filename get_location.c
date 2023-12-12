@@ -74,13 +74,13 @@ void * get_location (void* arg) {
             getPositionFromMarvelmindHedge(params->hedge, mobPos);
             printf("\npos x: %d\n\n",mobPos->x);
             //free(params->pos);
+            /*
             if (mobPos->x == 0 && mobPos->y == 0) {
                 printf("pos == 0\n");
                 usleep(500 * 1000); //waiting to ask again
                 continue;
-                
-
-            }
+            
+            }*/
             params->pos = mobPos;
             params->currentPoint.x = mobPos->x;
             params->currentPoint.y = mobPos->y;
