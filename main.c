@@ -284,6 +284,7 @@ int main(int argc, char *argv[]) {
         struct Point * mission = parse_point(argv[1],argv[2]);
         while (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
             delay(1);
+            printf("waiting for marvelminds\n");
         }
         printf("\n---CALCULATING TRAJECTORY---\n\n");
         printf("Sending points to traj function:\nx: %d\ny: %d\n",params->currentPoint.x,params->currentPoint.y);
