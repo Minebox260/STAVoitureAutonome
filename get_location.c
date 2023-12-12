@@ -76,6 +76,9 @@ void * get_location (void* arg) {
             //free(params->pos);
             if (mobPos->x == 0 && mobPos->y == 0) {
                 continue;
+                printf("pos == 0\n");
+                usleep(500 * 1000); //waiting to ask again
+
             }
             params->pos = mobPos;
             params->currentPoint.x = mobPos->x;
