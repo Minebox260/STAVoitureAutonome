@@ -261,10 +261,8 @@ int main(int argc, char *argv[]) {
     pos->z = 0;
     params->pos = pos;
     
-    Point current;
-    current.x = 0;
-    current.y = 0;
-    params->currentPoint = current;
+    params->currentPoint.x = 0;
+    params->currentPoint.y = 0;
 
     //charger carte en params
     if (extract_points(params) == -1) {
@@ -277,7 +275,6 @@ int main(int argc, char *argv[]) {
         perror("pthread_create");
         return 1;
     }
-
 
     //in debug mode we give the final mission directly
     if (DEBUG == 1) {
