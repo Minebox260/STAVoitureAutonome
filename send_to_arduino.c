@@ -106,6 +106,10 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 		return;
 	}
 		
+	if (current.x == 0 && current.y == 0) {
+		printf("POSITION EQUALS 0; MARVELMIND ERROR; ABORT\n");
+		return;
+	}
 	
 	int32_t data[4] = {(int32_t)current.x, (int32_t)current.y, (int32_t)next.x, (int32_t)next.y};
 	//printf("current: %d %d\n",data[0], data[1]);
