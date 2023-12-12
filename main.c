@@ -123,9 +123,6 @@ void calculate_next_point(struct PARAMS * params) {
 void *advance(void* arg) {
     struct PARAMS * params = (struct PARAMS*)arg;
 
-    if (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
-		return;
-	}
 
     while(params->next_goal.x == -1) {
         //envoyer code 106 au serveur == j'ai pas de mission
@@ -133,6 +130,10 @@ void *advance(void* arg) {
         sleep(1);
     }
     while (1) {
+        if (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
+		    continue;
+	    }
+        
         printf("\n---NEXT ITERATION---\n");
 
         //printf("current x: %d, y: %d\n",params->pos->x,params->pos->y);
