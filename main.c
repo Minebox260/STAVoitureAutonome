@@ -4,6 +4,7 @@
 #include "traj.h"
 #include "extraction_point.h"
 #include "send_to_arduino.h"
+#include "traj.c"
 
 void attendre(clock_t start, float time_in_ms) {
   while ((float)(clock() - start)/(float)CLOCKS_PER_SEC * 1000 < time_in_ms);
