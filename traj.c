@@ -96,7 +96,8 @@ void Trajectory(struct PARAMS *params, Point point_final) {
     ind = ind % n;
   }
   params->next_goal = params->chemin[1];
-  params->last_goal = params->chemin[0];
+  params->last_goal.x = 0;
+  params->last_goal.y = 0;
   params->indice_next_goal = 1;
 }
 
