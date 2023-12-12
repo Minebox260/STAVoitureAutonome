@@ -39,6 +39,7 @@ int trouverPointPlusProche(Point carte[], int n, int pointInit,
 }
 
 void Trajectory(struct PARAMS *params, Point point_final) {
+  printf("Entered traj\n");
   int n = params->nb_points; // Nombre de points
   params->chemin = (struct Point *)malloc(sizeof(struct Point) * n);
     for(int i=0; i<n; i++) {
@@ -59,6 +60,7 @@ void Trajectory(struct PARAMS *params, Point point_final) {
   double dist_min = 1000000.0;
   ordre.x = point_final.x;
   ordre.y = point_final.y;
+  printf("Determining end point\n");
   // Déterminer le point le plus proche de l'ordre
   for (int i = 0; i < n; i++) {
     if (distance(params->carte[i], ordre) < dist_min) {
