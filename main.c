@@ -99,6 +99,7 @@ void calculate_next_point(struct PARAMS * params) {
     Point last = params->last_goal;
     Point next = params->next_goal;
     printf("current x: %d, y: %d\n", actuel.x, actuel.y);
+    printf("last x: %d, y: %d\n", last.x, last.y);
     
     //EXTRAIRE LE PROCHAIN POINT DE TRAJECTOIRE
     printf("Distance actuel,last: %lf\nDistance actuel,next: %lf\n",distance(actuel,last),distance(actuel,next));
