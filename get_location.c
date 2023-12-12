@@ -75,9 +75,10 @@ void * get_location (void* arg) {
             //printf("\npos x: %d\n\n",mobPos->x);
             //free(params->pos);
             if (mobPos->x == 0 && mobPos->y == 0) {
-                continue;
                 printf("pos == 0\n");
                 usleep(500 * 1000); //waiting to ask again
+                continue;
+                
 
             }
             params->pos = mobPos;
