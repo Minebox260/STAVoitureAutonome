@@ -37,7 +37,7 @@ double evalu(int value, int target, float deltaT){
   
     // integral
     eintegral = eintegral + e*deltaT;
-    eintegral = constrain(abs(eintegral),-90,91);
+    eintegral = constrain(abs(eintegral),-45,46);
     //Serial.print("KI:");
     //Serial.println(eintegral );
 
@@ -154,7 +154,7 @@ void setup() {
   }
   pinMode(LED_BUILTIN, OUTPUT);
 
-  pidAngle.setParams(2, 0, 0.5, 255);
+  pidAngle.setParams(3.5, 0, 0.75, 255);
   
   //attachInterrupt(digitalPinToInterrupt(enca[0]),readEncoder<0>,RISING);
   //attachInterrupt(digitalPinToInterrupt(enca[1]),readEncoder<1>,RISING);
