@@ -4,6 +4,7 @@
 #define MAX_OCTETS 1024
 #define DEBUG 1 //if 1 we are in debug mode = no server communication
 #define DEBUG_MM 0
+#define NB_RESSOURCES 1
 
 #define _GNU_SOURCE
 #include <sched.h>
@@ -56,6 +57,8 @@ typedef struct Point {
   int x;
   int y;
   int ind;
+  int ressource;
+  int approcheRessource;
 } Point;
 
 //arg pour fonction envoyer_donnees
@@ -75,11 +78,14 @@ struct PARAMS{
     struct Point last_goal;
     struct Point next_goal;
     int indice_next_goal;
+    int reservedRessources[NB_RESSOURCES];
 };
 
 void attendre(clock_t start, float time_in_ms);
 
 void calculate_next_point(struct PARAMS * params);
+
+int isNextPointAllowed(struct PARAMS * params, Point nextPoint);
 
 void *advance(void* arg);
 

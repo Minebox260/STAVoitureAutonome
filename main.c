@@ -120,6 +120,24 @@ void calculate_next_point(struct PARAMS * params) {
         
 }
 
+int isNextPointAllowed(struct PARAMS * params, Point nextPoint) {
+    char buffer[MAX_OCTETS];
+    if (nextPoint.approcheRessource != -1 && nextPoint.ressource = -1) {
+        if (!params->reservedRessources[nextPoint.approcheRessource]) {
+            buffer[0] = '\0';
+            sprintf(buffer, "103:%d", nextPoint.approcheRessource);
+            send_data(buffer, *params);
+        } else return 1;
+    } else if (nextPoint.ressource != -1) {
+        if (params->reservedRessources[nextPoint.ressource]) return 1;
+        else return 0;
+    } else if (nextPoint.ressource == -1 && params->currentPoint.ressource != -1) {
+        buffer[0] = '\0';
+        sprintf(buffer, "104:%d", params->currentPoint.ressource);
+        send_data(buffer, *params);
+    }
+}
+
 void *advance(void* arg) {
     struct PARAMS * params = (struct PARAMS*)arg;
     while(params->next_goal.x == -1) {
