@@ -53,7 +53,7 @@ void Trajectory(struct PARAMS *params, Point point_final) {
   // Point points[n];
   Point ordre;
   Point final;
-  int indice = 1;
+  int indice = 0;
   int ix_pos_final;
   int indice_pos_init;
   double dist_min = 1000000.0;
@@ -70,7 +70,7 @@ void Trajectory(struct PARAMS *params, Point point_final) {
   }
 
   printf(" Pos final :  %d %d \n", final.x, final.y);
-  double minimum = distance(params->carte[0], depart);
+  double minimum = 1000000000;
   for (int j = 0; j < n; j++) {
     // Déterminer le point le plus proche de la position initiale
     if (distance(params->carte[j], depart) < minimum) {
@@ -84,11 +84,6 @@ void Trajectory(struct PARAMS *params, Point point_final) {
   int ix_pointActuel =
       indice_pos_init; // indice du point de la carte correspondant à la
                        // position actuelle de la voiture
-  params->chemin[0].x =
-      params->carte[ix_pointActuel]
-          .x; // premier point du chemin = point de la carte correspondant à la
-              // position actuelle de la voiture
-  params->chemin[0].y = params->carte[ix_pointActuel].y;
   // génerer le chemin!
   ind = indice_pos_init;
   while ((ind % n) != ix_pos_final) {
