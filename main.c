@@ -122,12 +122,13 @@ void calculate_next_point(struct PARAMS * params) {
 
 int isNextPointAllowed(struct PARAMS * params, Point nextPoint) {
     char buffer[MAX_OCTETS];
-    if (nextPoint.approcheRessource != -1 && nextPoint.ressource = -1) {
+    if (nextPoint.approcheRessource != -1 && nextPoint.ressource == -1) {
         if (!params->reservedRessources[nextPoint.approcheRessource]) {
             buffer[0] = '\0';
             sprintf(buffer, "103:%d", nextPoint.approcheRessource);
             send_data(buffer, *params);
-        } else return 1;
+        }
+        return 1;
     } else if (nextPoint.ressource != -1) {
         if (params->reservedRessources[nextPoint.ressource]) return 1;
         else return 0;
@@ -135,7 +136,8 @@ int isNextPointAllowed(struct PARAMS * params, Point nextPoint) {
         buffer[0] = '\0';
         sprintf(buffer, "104:%d", params->currentPoint.ressource);
         send_data(buffer, *params);
-    }
+        return 1;
+    } else return 1;
 }
 
 void *advance(void* arg) {
@@ -242,7 +244,7 @@ int main(int argc, char *argv[]) {
     */
     int port = open_comm_arduino();
     //int port = serial_ouvert(); version de yann
-    int sd;
+    int sd = 0;
     struct MarvelmindHedge * hedge;
     
     //bloquer threads de communication et de marvelmind en mode debug
@@ -250,8 +252,6 @@ int main(int argc, char *argv[]) {
         sd = setupUDP(argc, argv, &server_adr, &client_adr);
     } else if (DEBUG_MM != 1) {
         hedge = setupHedge(argc, argv);
-    } else {
-        sd = 0; //just to suppress warnings
     }
        
     

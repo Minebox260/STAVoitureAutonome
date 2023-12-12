@@ -86,6 +86,10 @@ void * handle_request(void * arg) {
         ptr = strtok(data->request, ":");
         ressource = atoi(ptr);
         data->params->reservedRessources[ressource] = 1;
+      case 204:
+        ptr = strtok(data->request, ":");
+        ressource = atoi(ptr);
+        data->params->reservedRessources[ressource] = 0;
       default:
         resp_code = 500;
         itoa(resp_code, resp);
