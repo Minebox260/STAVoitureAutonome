@@ -142,7 +142,7 @@ float calculate_angle_between_rays(struct Point center, struct Point a, struct P
 
     float cosTheta = dot / (magA * magB);
 
-    float angleDegrees = acos(cosTheta) (180.0 / PI);
+    float angleDegrees = acos(cosTheta) * (180.0 / PI);
 
     return angleDegrees;
 }
