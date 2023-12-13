@@ -67,7 +67,8 @@ int extract_points_index(struct PARAMS *params) {
   char *line;
   char *ptr;
   int index;
-
+  int ressource = -1;
+  int approcheRessource = -1;
   char ch;
   int lines = 0;
   int i = 0;
@@ -91,6 +92,13 @@ int extract_points_index(struct PARAMS *params) {
                             // 1 : le chemin de premier parking etc ...
       ptr = strtok(NULL, ":");
       index = atoi(ptr);
+    } else if (!strcmp(ptr, "ApprocheRessource")) {
+      ptr = strtok(NULL, ":");
+      approcheRessource = atoi(ptr);
+    } else if (!strcmp(ptr, "Ressource")) {
+      ptr = strtok(NULL, ":");
+      ressource = atoi(ptr);
+      approcheRessource = ressource;
     } else {
       x = atoi(ptr);
       ptr = strtok(NULL, ":");
@@ -99,6 +107,8 @@ int extract_points_index(struct PARAMS *params) {
       point.x = x;
       point.y = y;
       point.ind = index;
+      point.ressource = ressource;
+      point.approcheRessource = approcheRessource;
       points[i] = point;
       i++;
     }
