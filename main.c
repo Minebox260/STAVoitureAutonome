@@ -160,7 +160,7 @@ void *advance(void* arg) {
         
         
         if (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
-		    //send_stop_command(params->portArduino);
+		    send_stop_command(params->portArduino);
             sleep(1);
             continue;
 	    }
