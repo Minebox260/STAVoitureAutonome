@@ -121,7 +121,7 @@ SimplePID pidAngle;
 
 
 //COMMUNICATION ARDUINO _ RASPBERRY
-int code = -1;
+uint8_t code = 0;
 int comm_established = 0;
 int32_t x0;
 int32_t x1;
@@ -129,6 +129,7 @@ int32_t y0;
 int32_t y1;
 
 uint8_t buffer[16];
+uint8_t codeBuffer[1];
 int32_t data[4] = {x0, y0, x1, y1};
 
 int velocity = 0;
@@ -167,26 +168,27 @@ void loop() {
 
   if (Serial.available() == 0 && comm_established) {
     //Serial.println("nothing received");
-    code = -1;
+    code = 0;
   } else if (Serial.available() == 0 && !comm_established) {
     return;
   } else { //+1 for terminator
-    code = Serial.parseInt();
+    Serial.readBytes(codeBuffer, 1);
+    code = (uint8_t)codeBuffer[0];
     emptySerial(); //get rid of extra input that might rest    
   }
 
   
   if (code == 2) {
       //marvelmind doesn't work, motors have to be stopped
-      //blink(10,100);
+      blink(10,50);
       acknowledge();
       comm_established = 1;
       //moteur(0,pwm[0],in1[0],in2[0]);
       //moteur(0,pwm[1],in1[1],in2[1]);
-      //velocity = 0;
-      emptySerial();
+      velocity = 0;
+      //emptySerial();
   } else if (code == 1) {
-      //blink(10,100);
+      blink(10,50);
       
       acknowledge();
       comm_established = 1;
