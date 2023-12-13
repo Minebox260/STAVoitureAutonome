@@ -10,6 +10,8 @@
 #define DEBUG 1 //if 1 we are in debug mode = no server communication
 #define DEBUG_MM 0
 
+#define PI 3.1415962
+
 #define _GNU_SOURCE
 #include <sched.h>
 #include <pthread.h>
@@ -38,6 +40,7 @@
 #include <pthread.h>
 #include <sys/poll.h>
 #include <netdb.h>
+#include <math.h>
 //////////////////////////////////////////7
 //////////UNCOMMENT ON RASPBERRY///////////
 ///////////////////////////////////////////
