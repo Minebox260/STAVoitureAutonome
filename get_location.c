@@ -72,7 +72,7 @@ void * get_location (void* arg) {
         //debug mode without marvelminds
         if (DEBUG_MM != 1) {
             getPositionFromMarvelmindHedge(params->hedge, mobPos);
-            printf("\npos x: %d, pos y: %d\n",mobPos->x,mobPos->y);
+            printf("\npos MM x: %d, pos y: %d\n",mobPos->x,mobPos->y);
             //free(params->pos);
             /*
             if (mobPos->x == 0 && mobPos->y == 0) {

@@ -157,11 +157,13 @@ void *advance(void* arg) {
         sleep(1);
     }
     while (1) {
+        printf("\n---NEXT ADVANCE ITERATION---\n");
+
         if (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
-		    continue;
+		    send_stop_command(params->portArduino);
+            continue;
 	    }
 
-        printf("\n---NEXT ITERATION---\n");
 
         //printf("current x: %d, y: %d\n",params->pos->x,params->pos->y);
         //put next point in params->next_goal
@@ -307,11 +309,10 @@ int main(int argc, char *argv[]) {
         }
         struct Point * mission = parse_point(argv[1],argv[2]);
         while (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
-            delay(500);
             printf("waiting for marvelminds\n");
         }
         printf("\n---CALCULATING TRAJECTORY---\n\n");
-        printf("Sending points to traj function:\nx: %d\ny: %d\n",params->currentPoint.x,params->currentPoint.y);
+        printf("Sending starting point to traj function:\nx: %d\ny: %d\n",params->currentPoint.x,params->currentPoint.y);
         Trajectory(params, *mission);
 
     }

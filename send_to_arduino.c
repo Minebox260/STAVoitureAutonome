@@ -49,6 +49,7 @@ int open_comm_arduino() {
 
 //Call seperateley for each integer you want to send
 //code 1: send next position
+//code -9: stop 
 int send_code_to_arduino(int port, int16_t code) {
 	char received_data[64];
 	char received_char;
@@ -91,6 +92,20 @@ int send_code_to_arduino(int port, int16_t code) {
 		}
 	}
 	return 0;
+}
+
+void send_stop_command(int port) {
+	printf("\n---STOP CMD TO ARDUINO---\n");
+
+	int codeOutput = send_code_to_arduino(port, -9);
+	
+	if(codeOutput==0) {
+		printf("no ACK received ERROR\n");
+		return;
+	} else if (codeOutput==2) {
+		printf("ACK receive timed out ERROR\n");
+		return;
+	}
 }
 
 void send_next_point_to_arduino(int port, Point next, Point current) {

@@ -181,6 +181,15 @@ void loop() {
   }
 
   switch (code) {
+    case -9:
+      //marvelmind doesn't work, motors have to be stopped
+      
+      acknowledge(1);
+      comm_established = 1;
+      moteur(0,pwm[0],in1[0],in2[0]);
+      moteur(0,pwm[1],in1[1],in2[1]);
+
+      
     case 0:
 
     case 1:
