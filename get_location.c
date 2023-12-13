@@ -67,7 +67,7 @@ void * get_location (void* arg) {
     //clock_t start;
   
     while(1) {
-        start = clock();
+        //start = clock();
         
         //debug mode without marvelminds
         if (DEBUG_MM != 1) {
