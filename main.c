@@ -308,8 +308,11 @@ int main(int argc, char *argv[]) {
             printf("DEBUG MODE: ENTER X AND Y OF MISSION PLEASE!\n");
         }
         struct Point * mission = parse_point(argv[1],argv[2]);
+
+        printf("\n---WAITING FOR MARVELMINDS---\n\n");
+
         while (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
-            printf("waiting for marvelminds\n");
+            //waiting that marvelmind doesn't send 0
         }
         printf("\n---CALCULATING TRAJECTORY---\n\n");
         printf("Sending starting point to traj function:\nx: %d\ny: %d\n",params->currentPoint.x,params->currentPoint.y);
