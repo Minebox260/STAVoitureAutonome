@@ -178,7 +178,92 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 	printf("VERIFICATION\nnext - x: %d, y: %d\n", ndata[2], ndata[3]);
 
 }
+/*
+void send_next_point_to_arduino(int port, Point next, Point current) {
+	printf("\n---START COMM ARDUINO---\n");
 
+	if (current.x == 0 && current.y == 0) {
+		return;
+	}
+	
+	int codeOutput = send_code_to_arduino(port, 1);
+
+	if(codeOutput==0) {
+		printf("no ACK received ERROR\n");
+		return;
+	} else if (codeOutput==2) {
+		printf("ACK receive timed out ERROR\n");
+		return;
+	}
+	//testing straight line
+	if (DEBUG_STRAIGHT == 1) {
+		next.x = END_OF_LINE_X;
+		next.y = END_OF_LINE_Y;
+		printf("NEXT X: %d, NEXT Y: %d\n",next.x,next.y);
+	}
+	
+	int32_t data[4] = {(int32_t)current.x, (int32_t)current.y, (int32_t)next.x, (int32_t)next.y};
+	//printf("current: %d %d\n",data[0], data[1]);
+	printf("---POINTS SENT---\n");
+	for(int32_t i=0; i < 4; i++) {
+		char * intptr = (char*)&data[i];
+		for(int32_t j = 0; j < sizeof(int32_t); j++) {
+			//send each byte as a char seperately
+			printf("%02X ", *(intptr+j));
+			serialPutchar(port, *(intptr+j));
+		}
+		//serialPutchar(port, '\0'); not necessary with bytewise comm
+		//printf("\n");	
+		/*
+		char * intptr = (char*)&data[i];
+		for(int j=0; j < sizeof(int32_t); j++) {
+			//send each byte as a char seperately
+			printf("%02X ", ((data[i] >> 8*(3-j)) && 0xFF));
+			serialPutchar(port, ((data[i] >> 8*(3-j)) && 0xFF));
+		}
+		printf("\n");
+	}
+	printf("\n");	
+	//printf("sent points to ARDUINO\n");
+	
+	
+	//wait for debug return
+	long duration; //in milliseconds
+	time_t start, now;
+	start = time(NULL);
+	int timeout = 1;
+	uint8_t buffer[16];
+	for (int i; i < 16; i++) {
+		buffer[i] = 0;
+	}
+	int count = 0;
+	printf("---POINTS RECEIVED FOR VERIFICATION---\n");
+	while(1) {
+		if (serialDataAvail(port) > 0) {
+			char received_byte = serialGetchar(port);
+			printf("%02X ", received_byte);
+			buffer[count] = received_byte;
+			count++;
+		}
+		now = time(NULL);
+		duration = difftime(now,start);
+		if (duration >= timeout) {
+			//printf("\nTIMEOUT\n");
+			break;
+		}
+	}
+	printf("\n");
+	int32_t ndata[4];
+	for(int i = 0; i<4; i++) {
+		int firstIx = 4*i;
+		ndata[i] = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
+			 + ((int32_t)buffer[firstIx+1] << 8) + ((int32_t)buffer[firstIx]));
+        }
+      
+	printf("VERIFICATION\ncurrent - x: %d, y: %d\n", ndata[0], ndata[1]);
+	printf("VERIFICATION\nnext - x: %d, y: %d\n", ndata[2], ndata[3]);
+
+}*/
 
 void close_comm_arduino(int port) {
 	serialClose(port);

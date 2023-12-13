@@ -98,29 +98,53 @@ void calculate_next_point(struct PARAMS * params) {
     Point actuel = params->currentPoint;
     Point last = params->last_goal;
     Point next = params->next_goal;
+    int dist_min = 500;
     printf("current x: %d, y: %d\n", actuel.x, actuel.y);
     printf("last x: %d, y: %d\n", last.x, last.y);
     
     //EXTRAIRE LE PROCHAIN POINT DE TRAJECTOIRE
     printf("Distance actuel,last: %lf\nDistance actuel,next: %lf\n",distance(actuel,last),distance(actuel,next));
-    if (distance(actuel, last) > distance(actuel, next)){
-        params->last_goal = next;
-        printf("next goal x: %d, y: %d\n",next.x,next.y);
+    //if (distance(actuel, last) > distance(actuel, next)){
+    if (distance(actuel,next) < dist_min) {
+        //params->last_goal = next;
         
         params->indice_next_goal ++;
         params->next_goal = params->chemin[params->indice_next_goal];
-        printf("found next goal in params\n");
+        printf("next goal CHANGED x: %d, y: %d\n",next.x,next.y);
     }
     else {
         //point rests the same
         //printf("next goal hasn't changed\n");
-        printf("next x: %d, y: %d\n", next.x, next.y);
+        printf("next (same) x: %d, y: %d\n", next.x, next.y);
 
         //start = clock();
         //attendre(start, 1000);
         //test
     }
         
+}
+
+//provided one center point and two other points we calculate the angle between
+//the rays going from the center point to the other points
+float calculate_angle_between_rays(struct Point center, struct Point a, struct Point b) {
+    int32_t vectorAX = a.x - center.x;
+    int32_t vectorAY = a.y - center.y;
+
+    int32_t vectorBX = b.x - center.x;
+    int32_t vectorBY = b.y - center.y;
+
+    //calculate dot product
+    int32_t dot = vectorAX * vectorBX + vectorAY * vectorBY;
+
+    //calculate magnitude
+    float magA = sqrt(vectorAX * vectorAX + vectorAY * vectorAY);
+    float magB = sqrt(vectorBX * vectorBX + vectorBY * vectorBY);
+
+    float cosTheta = dot / (magA * magB);
+
+    float angleDegrees = acos(cosTheta) (180.0 / PI);
+
+    return angleDegrees;
 }
 
 void *advance(void* arg) {

@@ -58,12 +58,12 @@
     }
 
 typedef struct Point {
-  int x;
-  int y;
+  int32_t x;
+  int32_t y;
   int ind;
 } Point;
 
-//arg pour fonction envoyer_donnees
+//structure pour contenir toutes les données partagées
 struct PARAMS{
     int portArduino;
     struct PositionValue * pos;
