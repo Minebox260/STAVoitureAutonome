@@ -316,6 +316,8 @@ int main(int argc, char *argv[]) {
     params->currentPoint.x = 0;
     params->currentPoint.y = 0;
 
+    for (int i = 0; i < NB_RESSOURCES; i++) params->reservedRessources[i] = 0;
+    
     //charger carte en params
     if (extract_points(params) == -1) {
       printf("Impossible de récupérer les données de la carte\n");
