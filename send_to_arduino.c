@@ -98,7 +98,7 @@ void send_stop_command(int port) {
 	printf("\n---STOP CMD TO ARDUINO---\n");
 
 	int codeOutput = send_code_to_arduino(port, -9);
-	
+
 	if(codeOutput==0) {
 		printf("no ACK received ERROR\n");
 		return;
@@ -229,7 +229,7 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 		}
 		//serialPutchar(port, '\0'); not necessary with bytewise comm
 		//printf("\n");	
-		/*
+		
 		char * intptr = (char*)&data[i];
 		for(int j=0; j < sizeof(int32_t); j++) {
 			//send each byte as a char seperately

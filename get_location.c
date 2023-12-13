@@ -64,7 +64,7 @@ void * get_location (void* arg) {
     struct PositionValue * mobPos = (struct PositionValue*)malloc(sizeof(struct PositionValue)); //position du mobile
     mobPos->x = 0;
     mobPos->y = 0;
-    clock_t start;
+    //clock_t start;
   
     while(1) {
         start = clock();
