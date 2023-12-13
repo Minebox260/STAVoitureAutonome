@@ -112,6 +112,7 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 	printf("\n---START COMM ARDUINO---\n");
 
 	if (current.x == 0 && current.y == 0) {
+		printf("0: ABORTING COMM\n");
 		return;
 	}
 	
