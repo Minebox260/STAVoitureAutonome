@@ -93,6 +93,6 @@ void * get_location (void* arg) {
         }
 
         //50 milliseconds
-        usleep(50 * 1000);
+        usleep(500 * 1000);
     }
 }
