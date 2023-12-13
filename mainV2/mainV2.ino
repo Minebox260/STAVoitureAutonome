@@ -59,6 +59,7 @@ void acknowledge() {
   delay(50);
 };
 
+
 void blink(int times, int pause) {
   for(int i = 0; i < times; i++) {
     digitalWrite(LED_BUILTIN, HIGH);
@@ -120,7 +121,7 @@ SimplePID pidAngle;
 
 
 //COMMUNICATION ARDUINO _ RASPBERRY
-int code = -1;
+uint8_t code = 0;
 int comm_established = 0;
 int32_t x0;
 int32_t x1;
@@ -128,9 +129,10 @@ int32_t y0;
 int32_t y1;
 
 uint8_t buffer[16];
+uint8_t codeBuffer[1];
 int32_t data[4] = {x0, y0, x1, y1};
 
-
+int velocity = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -162,30 +164,31 @@ void loop() {
   //Serial.println("\nstart loop");
   //lire le code
   
-  blink(1,50);
+  blink(1,150);
 
   if (Serial.available() == 0 && comm_established) {
     //Serial.println("nothing received");
-    code = -1;
+    code = 0;
   } else if (Serial.available() == 0 && !comm_established) {
     return;
-  } else {
-    code = Serial.parseInt();
+  } else { //+1 for terminator
+    Serial.readBytes(codeBuffer, 1);
+    code = (uint8_t)codeBuffer[0];
     emptySerial(); //get rid of extra input that might rest    
   }
 
-  switch (code) {
-         
-    case 2:
+  
+  if (code == 2) {
       //marvelmind doesn't work, motors have to be stopped
-      //blink(10,10);
+      blink(10,50);
       acknowledge();
       comm_established = 1;
-      moteur(0,pwm[0],in1[0],in2[0]);
-      moteur(0,pwm[1],in1[1],in2[1]);
-
-    case 1:
-      //blink(10,10);
+      //moteur(0,pwm[0],in1[0],in2[0]);
+      //moteur(0,pwm[1],in1[1],in2[1]);
+      velocity = 0;
+      //emptySerial();
+  } else if (code == 1) {
+      blink(10,50);
       
       acknowledge();
       comm_established = 1;
@@ -197,7 +200,7 @@ void loop() {
       }
       Serial.readBytes(buffer, 16);
       emptySerial();
-      
+      velocity = 30;
       for(int i = 0; i<4; i++) {
         int firstIx = 4*i;
         data[i] = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
@@ -229,11 +232,8 @@ void loop() {
       for(int32_t j = 0; j < sizeof(int32_t); j++) {
         //send each byte as a char seperately
         Serial.write((uint8_t*)(intptr+j), 1);
-      }
-    
-      
-      
-  }//end switch
+      }  
+  }
 
 
   //Serial.println("reçu:");
@@ -277,8 +277,8 @@ void loop() {
   double pwr = pidAngle.evalu(gyro.getAngleZ(), targetAngle, deltaT);
   //Serial.print(" PWR:");
   //Serial.println(pwr );
-  moteur(30 + pwr,pwm[0],in1[0],in2[0]);
-  moteur(30 - pwr,pwm[1],in1[1],in2[1]);
+  moteur(velocity + pwr,pwm[0],in1[0],in2[0]);
+  moteur(velocity - pwr,pwm[1],in1[1],in2[1]);
   //Serial.println("end of loop");
 
 
