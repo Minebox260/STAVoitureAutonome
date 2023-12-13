@@ -87,7 +87,6 @@ int send_code_to_arduino(int port, int16_t code) {
 		current = time(NULL);
 		duration = difftime(current,start);
 		if (duration >= timeout) {
-			printf("TIMEOUT ack failed\n");
 			return 2;
 		}
 	}
