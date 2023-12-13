@@ -131,7 +131,12 @@ int isNextPointAllowed(struct PARAMS * params, Point nextPoint) {
         return 1;
     } else if (nextPoint.ressource != -1) {
         if (params->reservedRessources[nextPoint.ressource]) return 1;
-        else return 0;
+        else {
+            buffer[0] = '\0';
+            sprintf(buffer, "103:%d", nextPoint.ressource);
+            send_data(buffer, *params);
+            return 0;
+        }
     } else if (nextPoint.ressource == -1 && params->currentPoint.ressource != -1) {
         buffer[0] = '\0';
         sprintf(buffer, "104:%d", params->currentPoint.ressource);
