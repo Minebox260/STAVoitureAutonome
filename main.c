@@ -157,12 +157,14 @@ void *advance(void* arg) {
         sleep(1);
     }
     while (1) {
-        printf("\n---NEXT ADVANCE ITERATION---\n");
+        
         
         if (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
 		    //send_stop_command(params->portArduino);
             continue;
 	    }
+
+        printf("\n---NEXT ADVANCE ITERATION---\n");
 
 
         //printf("current x: %d, y: %d\n",params->pos->x,params->pos->y);
