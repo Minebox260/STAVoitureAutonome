@@ -273,12 +273,17 @@ void loop() {
   
   
 
-
+ 
   double pwr = pidAngle.evalu(gyro.getAngleZ(), targetAngle, deltaT);
   //Serial.print(" PWR:");
   //Serial.println(pwr );
-  moteur(velocity + pwr,pwm[0],in1[0],in2[0]);
-  moteur(velocity - pwr,pwm[1],in1[1],in2[1]);
+  if (velocity != 0) {
+    moteur(velocity + pwr,pwm[0],in1[0],in2[0]);
+    moteur(velocity - pwr,pwm[1],in1[1],in2[1]);
+  } else {
+    moteur(0,pwm[0],in1[0],in2[0]);
+    moteur(0,pwm[1],in1[1],in2[1]);
+  }
   //Serial.println("end of loop");
 
 
@@ -296,7 +301,7 @@ void moteur(int valeur, int pwm, int in1, int in2)
     digitalWrite(in1,0);
     digitalWrite(in2,1);
    }
-  analogWrite(pwm,constrain( abs(valeur) ,35,191));
+  analogWrite(pwm,constrain( abs(valeur) ,0,191));
 }
 
 
