@@ -52,15 +52,9 @@ double evalu(int value, int target, float deltaT){
   }  
 };
 
-void acknowledge(int code) {
+void acknowledge() {
   delay(50);
-  if(code == 1) {
-    Serial.println("ACK");
-  }
-  
-  else {
-    Serial.println("NACK");
-  }
+  Serial.println("ACK");
   Serial.flush();
   delay(50);
 };
@@ -168,34 +162,32 @@ void loop() {
   //Serial.println("\nstart loop");
   //lire le code
   
-  blink(1,150);
+  blink(1,50);
 
   if (Serial.available() == 0 && comm_established) {
     //Serial.println("nothing received");
     code = -1;
   } else if (Serial.available() == 0 && !comm_established) {
     return;
-  } else { //+1 for terminator
+  } else {
     code = Serial.parseInt();
     emptySerial(); //get rid of extra input that might rest    
   }
 
   switch (code) {
+         
     case 2:
       //marvelmind doesn't work, motors have to be stopped
-
-      acknowledge(1);
+      //blink(10,10);
+      acknowledge();
       comm_established = 1;
       moteur(0,pwm[0],in1[0],in2[0]);
       moteur(0,pwm[1],in1[1],in2[1]);
 
-      
-    case 0:
-
     case 1:
-      //blink(10,100);
+      //blink(10,10);
       
-      acknowledge(1);
+      acknowledge();
       comm_established = 1;
       
       while (Serial.available() < (4 * sizeof(int32_t))) {
@@ -238,6 +230,7 @@ void loop() {
         //send each byte as a char seperately
         Serial.write((uint8_t*)(intptr+j), 1);
       }
+    
       
       
   }//end switch
