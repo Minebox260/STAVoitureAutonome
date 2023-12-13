@@ -92,7 +92,7 @@ void * get_location (void* arg) {
             params->currentPoint.y = mobPos->y;
         }
 
-        //500 milliseconds
-        usleep(500 * 1000);
+        //50 milliseconds
+        usleep(50 * 1000);
     }
 }
