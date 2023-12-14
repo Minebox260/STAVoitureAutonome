@@ -134,6 +134,10 @@ int32_t data[4] = {x0, y0, x1, y1};
 
 int velocity = 0;
 
+float delta_x;
+float delta_y;
+float targetAngle;
+
 void setup() {
   Serial.begin(115200);
   gyro.begin();
@@ -210,6 +214,12 @@ void loop() {
       y0 = data[1];
       x1 = data[2];
       y1 = data[3];
+
+      
+      delta_x = (x1 - x0);
+      delta_y = (y1 - y0);
+      
+      targetAngle = atan2(delta_y,delta_x);
       
       //debug code for checking the integers constructed
       
@@ -251,10 +261,6 @@ void loop() {
   //___________________________________________
   gyro.update();
 
-  float delta_x = (x1 - x0);
-  float delta_y = (y1 - y0);
-  
-  float targetAngle = atan2(delta_y,delta_x);
 
   //float targetAngle = 45;
   /*Serial.print(" AngleTarget:");
@@ -277,9 +283,9 @@ void loop() {
   double pwr = pidAngle.evalu(gyro.getAngleZ(), targetAngle, deltaT);
   //Serial.print(" PWR:");
   //Serial.println(pwr );
-  if (velocity != 0) {
-    moteur(velocity + pwr,pwm[0],in1[0],in2[0]);
-    moteur(velocity - pwr,pwm[1],in1[1],in2[1]);
+  if (1 != 0) {
+    moteur(30 - pwr,pwm[0],in1[0],in2[0]);
+    moteur(30 + pwr,pwm[1],in1[1],in2[1]);
   } else {
     moteur(0,pwm[0],in1[0],in2[0]);
     moteur(0,pwm[1],in1[1],in2[1]);
@@ -305,7 +311,7 @@ void moteur(int valeur, int pwm, int in1, int in2)
     analogWrite(pwm,constrain( 0 ,0,0));
     return;
   }
-  analogWrite(pwm,constrain( abs(valeur) ,0,100));
+  analogWrite(pwm,constrain( abs(valeur) ,35,100));
   
 }
 
