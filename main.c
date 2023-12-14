@@ -100,7 +100,7 @@ void calculate_next_point(struct PARAMS * params) {
     Point next = params->next_goal;
     int dist_min = 500;
     printf("current x: %d, y: %d\n", actuel.x, actuel.y);
-    printf("last x: %d, y: %d\n", last.x, last.y);
+    //printf("last x: %d, y: %d\n", last.x, last.y);
     
     //EXTRAIRE LE PROCHAIN POINT DE TRAJECTOIRE
     printf("Distance actuel,last: %lf\nDistance actuel,next: %lf\n",distance(actuel,last),distance(actuel,next));
@@ -312,7 +312,7 @@ int main(int argc, char *argv[]) {
         }
         struct Point * mission = parse_point(argv[1],argv[2]);
 
-        printf("\n---WAITING FOR MARVELMINDS---\n\n");
+        printf("\n---WAITING FOR MARVELMINDS---\n\n");  
 
         while (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
             //waiting that marvelmind doesn't send 0
