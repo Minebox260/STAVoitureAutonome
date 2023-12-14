@@ -103,7 +103,7 @@ void calculate_next_point(struct PARAMS * params) {
     //printf("last x: %d, y: %d\n", last.x, last.y);
     
     //EXTRAIRE LE PROCHAIN POINT DE TRAJECTOIRE
-    printf("Distance actuel,last: %lf\nDistance actuel,next: %lf\n",distance(actuel,last),distance(actuel,next));
+    //printf("Distance actuel,last: %lf\nDistance actuel,next: %lf\n",distance(actuel,last),distance(actuel,next));
     //if (distance(actuel, last) > distance(actuel, next)){
     if (distance(actuel,next) < dist_min) {
         //params->last_goal = next;
