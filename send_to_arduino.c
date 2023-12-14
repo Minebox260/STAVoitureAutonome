@@ -126,8 +126,8 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 	}
 	//testing straight line
 	if (DEBUG_STRAIGHT == 1) {
-		current.x = START_OF_LINE_X;
-		current.y = START_OF_LINE_Y;
+		//current.x = START_OF_LINE_X;
+		//current.y = START_OF_LINE_Y;
 		next.x = END_OF_LINE_X;
 		next.y = END_OF_LINE_Y;
 		printf("NEXT X: %d, NEXT Y: %d\n",next.x,next.y);

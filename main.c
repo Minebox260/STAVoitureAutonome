@@ -96,7 +96,7 @@ void* send_next_point_to_arduino(void* arg) {
 
 void calculate_next_point(struct PARAMS * params) {
     Point actuel = params->currentPoint;
-    Point last = params->last_goal;
+    //Point last = params->last_goal;
     Point next = params->next_goal;
     int dist_min = 500;
     printf("current x: %d, y: %d\n", actuel.x, actuel.y);
