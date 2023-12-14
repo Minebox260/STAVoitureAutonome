@@ -65,6 +65,7 @@ void * handle_request(void * arg) {
     int code;
     int resp_code = 0;
     char *ptr;
+    int ressource;
     char resp[MAX_OCTETS+1];
     struct Point * mission = (Point*)malloc(sizeof(Point));
 
@@ -81,6 +82,14 @@ void * handle_request(void * arg) {
         resp_code = 205;
         itoa(resp_code, resp);
         break;
+      case 203:
+        ptr = strtok(data->request, ":");
+        ressource = atoi(ptr);
+        data->params->reservedRessources[ressource] = 1;
+      case 204:
+        ptr = strtok(data->request, ":");
+        ressource = atoi(ptr);
+        data->params->reservedRessources[ressource] = 0;
       default:
         resp_code = 500;
         itoa(resp_code, resp);

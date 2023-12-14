@@ -147,6 +147,31 @@ float calculate_angle_between_rays(struct Point center, struct Point a, struct P
     return angleDegrees;
 }
 
+int isNextPointAllowed(struct PARAMS * params, Point nextPoint) {
+    char buffer[MAX_OCTETS];
+    if (nextPoint.approcheRessource != -1 && nextPoint.ressource == -1) {
+        if (!params->reservedRessources[nextPoint.approcheRessource]) {
+            buffer[0] = '\0';
+            sprintf(buffer, "103:%d", nextPoint.approcheRessource);
+            send_data(buffer, *params);
+        }
+        return 1;
+    } else if (nextPoint.ressource != -1) {
+        if (params->reservedRessources[nextPoint.ressource]) return 1;
+        else {
+            buffer[0] = '\0';
+            sprintf(buffer, "103:%d", nextPoint.ressource);
+            send_data(buffer, *params);
+            return 0;
+        }
+    } else if (nextPoint.ressource == -1 && params->currentPoint.ressource != -1) {
+        buffer[0] = '\0';
+        sprintf(buffer, "104:%d", params->currentPoint.ressource);
+        send_data(buffer, *params);
+        return 1;
+    } else return 1;
+}
+
 void *advance(void* arg) {
     struct PARAMS * params = (struct PARAMS*)arg;
 
@@ -262,7 +287,7 @@ int main(int argc, char *argv[]) {
     */
     int port = open_comm_arduino();
     //int port = serial_ouvert(); version de yann
-    int sd;
+    int sd = 0;
     struct MarvelmindHedge * hedge;
     
     //bloquer threads de communication et de marvelmind en mode debug
@@ -270,8 +295,6 @@ int main(int argc, char *argv[]) {
         sd = setupUDP(argc, argv, &server_adr, &client_adr);
     } else if (DEBUG_MM != 1) {
         hedge = setupHedge(argc, argv);
-    } else {
-        sd = 0; //just to suppress warnings
     }
        
     
@@ -293,6 +316,8 @@ int main(int argc, char *argv[]) {
     params->currentPoint.x = 0;
     params->currentPoint.y = 0;
 
+    for (int i = 0; i < NB_RESSOURCES; i++) params->reservedRessources[i] = 0;
+    
     //charger carte en params
     if (extract_points(params) == -1) {
       printf("Impossible de récupérer les données de la carte\n");

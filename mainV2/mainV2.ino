@@ -305,7 +305,7 @@ void moteur(int valeur, int pwm, int in1, int in2)
     analogWrite(pwm,constrain( 0 ,0,0));
     return;
   }
-  analogWrite(pwm,constrain( abs(valeur) ,35,191));
+  analogWrite(pwm,constrain( abs(valeur) ,0,100));
   
 }
 
