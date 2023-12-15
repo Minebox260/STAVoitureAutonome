@@ -60,39 +60,53 @@ struct MarvelmindHedge * setupHedge(int argc, char * argv[]) {
 }
 
 void * get_location (void* arg) {
+    const int numSamplesAverage = 5;
     struct PARAMS * params = (struct PARAMS*)arg;
     struct PositionValue * mobPos = (struct PositionValue*)malloc(sizeof(struct PositionValue)); //position du mobile
     mobPos->x = 0;
     mobPos->y = 0;
     //clock_t start;
-  
+    int sumX,sumY;
+    
     while(1) {
         //start = clock();
         
         //debug mode without marvelminds
-        if (DEBUG_MM != 1) {
-            getPositionFromMarvelmindHedge(params->hedge, mobPos);
-            printf("\npos MM x: %d, pos y: %d\n",mobPos->x,mobPos->y);
-            //free(params->pos);
-            /*
-            if (mobPos->x == 0 && mobPos->y == 0) {
-                printf("pos == 0\n");
-                usleep(500 * 1000); //waiting to ask again
-                continue;
-            
-            }*/
-            params->pos = mobPos;
-            params->currentPoint.x = mobPos->x;
-            params->currentPoint.y = mobPos->y;
-        } else {
+        if (DEBUG_MM == 1) {
             mobPos->x += 1;
             mobPos->y += 1;
             params->pos = mobPos;
             params->currentPoint.x = mobPos->x;
             params->currentPoint.y = mobPos->y;
         }
+        
+        sumX = 0;
+        sumY = 0;
+        //for (int i = 0; i < numSamplesAverage; i++) {
+        getPositionFromMarvelmindHedge(params->hedge, mobPos);
+        //}
+        
+                
+        
+        printf("\npos MM x: %d, pos y: %d\n",mobPos->x,mobPos->y);
+        //free(params->pos);
+        /*
+        if (mobPos->x == 0 && mobPos->y == 0) {
+            printf("pos == 0\n");
+            usleep(500 * 1000); //waiting to ask again
+            continue;
+        
+        }*/
+        
+        
+        params->pos = mobPos;
+        params->currentPoint.x = mobPos->x;
+        params->currentPoint.y = mobPos->y;
+        
+        //250 milliseconds minimum latency (TESTED)
+        usleep(250 * 1000);
 
-        //50 milliseconds
-        usleep(500 * 1000);
+
+        
     }
 }
