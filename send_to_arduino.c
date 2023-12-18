@@ -196,15 +196,15 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 		ndata[i] = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
 				+ ((int32_t)buffer[firstIx+1] << 8) + ((int32_t)buffer[firstIx]));
         }
-    //firstIx = 16;
+    firstIx = 16;
     //float on raspberry 4 bytes, double on arduino also 4 bytes
-	//int32_t angle = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
+	int32_t angle = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
 				+ ((int32_t)buffer[firstIx+1] << 8) + ((int32_t)buffer[firstIx]));
 
       
 	printf("VERIFICATION\ncurrent - x: %d, y: %d\n", ndata[0], ndata[1]);
 	printf("next - x: %d, y: %d\n", ndata[2], ndata[3]);
-	//printf("angle: %d\n", angle);
+	printf("angle: %d\n", angle);
 	
 }
 /*
