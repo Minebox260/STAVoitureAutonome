@@ -74,6 +74,7 @@ void * handle_request(void * arg) {
 
     // Analyse du code de requête
     code = atoi(ptr);
+    printf("Received Request : %s", data->request);
     switch (code) {
       case 105: 
         mission = parse_point(strtok(NULL,":"),strtok(NULL,":")); //apparamment il faut mettre NULL pour qu'il continue avec le meme buffer
@@ -97,7 +98,7 @@ void * handle_request(void * arg) {
     }
   
   // On envoie la réponse
-  send_data(resp, *data->params);
+  if (resp_code != 0) send_data(resp, *data->params);
   pthread_exit(NULL);
   return EXIT_SUCCESS;
 }
