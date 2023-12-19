@@ -76,12 +76,18 @@ int main (int argc, char *argv[])
 
     while ((!terminateProgram) && (!hedge->terminationRequired))
     {
+        struct timespec ts;
         if (clock_gettime(CLOCK_REALTIME, &ts) == -1)
 		{
 			printf("clock_gettime error");
 			return -1;
 		}
-		ts.tv_sec += 2;
+		ts.tv_nsec += 250 * 1000000;
+		if (ts.tv_nsec >= 1000000000) {
+			ts.tv_nsec -= 1000000000;
+			ts.tv_sec += 1;
+		}
+		
 		sem_timedwait(sem,&ts);
 
 		
