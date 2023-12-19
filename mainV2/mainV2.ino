@@ -1,11 +1,10 @@
-#include <TimerOne.h>
 #include <util/atomic.h>
 //#include "MeOrion.h"
 #include <MeMegaPi.h>
 #include <Wire.h>
 
 
-//#define PI  3.141592653589793
+#define DEBUG true
 
 
 double angleWrap(double angle);
@@ -190,7 +189,9 @@ void loop() {
   //nothing received since the beginning
   else if (Serial.available() == 0 && !comm_established) {
     //we do nothing before we haven't received a next point
-    return;
+    if (DEBUG == false) {
+      return;
+    }
   } 
   //data received from the Raspberry
   else {
@@ -241,6 +242,9 @@ void loop() {
       targetAngle = (targetAngle * 360) / (2*PI); //converting rads to degrees
 
       targetAngleInt = (int32_t)targetAngle;
+      Serial.print(targetAngle);
+      Serial.print(" ");
+      Serial.println(targetAngleInt);
       
       //debug code for checking the integers constructed
 
@@ -258,18 +262,8 @@ void loop() {
       }
       
       
-      /*//angle
-      intptr = (char*)&targetAngle;
-      */
   }
 
-
-  //Serial.println("reçu:");
-  //Serial.print("x0 ="); Serial.print(x0);
-  //Serial.print(" y0 ="); Serial.print(y0);
-  //Serial.print(" x1 ="); Serial.print(x1);
-  //Serial.print(" y1 ="); Serial.println(y1);
-    
 
   //float targetAngle = 45;
   /*Serial.print(" AngleTarget:");
@@ -279,6 +273,27 @@ void loop() {
   Serial.print(" AngleActuel:");*/
   //Serial.println(gyro.getAngleZ() );
   //Serial.println(targetAngle);
+  
+      x0 = 0;
+      y0 = 0;
+      x1 = 1;
+      y1 = -2;
+
+      
+      delta_x = (x1 - x0);
+      delta_y = (y1 - y0);
+
+      
+      targetAngle = atan2(delta_y,delta_x);
+      targetAngle = (targetAngle * 360) / (2*PI); //converting rads to degrees
+
+      targetAngleInt = (int32_t)targetAngle;
+      Serial.print(targetAngle);
+      Serial.print(" ");
+      Serial.print(gyro.getAngleZ());
+      Serial.print(" ");
+      Serial.println(targetAngleInt);
+      
   
 
   // time difference
