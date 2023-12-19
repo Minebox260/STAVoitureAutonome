@@ -10,7 +10,7 @@
 #define DEBUG_STRAIGHT 1
 
 #define MAX_OCTETS 1024
-#define DEBUG 1 //if 1 we are in debug mode = no server communication
+#define DEBUG_COMM 1 //if 1 we are in debug mode = no server communication
 #define DEBUG_MM 0
 #define NB_RESSOURCES 1
 

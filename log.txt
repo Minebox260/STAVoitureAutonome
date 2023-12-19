@@ -1,0 +1,345 @@
+pi@robot1:~/Projet_Voiture_Autonome_STA_2023/Final/V1REPO $ ./client_exe 192.168.24.235 5000
+Unable to open serial device: /dev/ttyUSB0
+STARTING CLIENT ON 192.168.24.171
+Nume la socket : 3
+Connexion au serveur : 192.168.24.235:5000
+Enregistrement auprès du serveur...
+Réponse reçue: 201
+
+SETTING UP HEDGE
+
+
+SETUP HEDGE FINISHED
+
+Opened serial port /dev/ttyACM0 with baudrate 115200
+Thread "receive_data" lancé
+
+
+pos MM x: 0, pos y: 0
+Thread "send_pos_to_server" lancé
+
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+ENTER A MISSION PLEASE!
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+ENTER A MISSION PLEASE!
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0
+ENTER A MISSION PLEASE!
+
+pos MM x: 0, pos y: 0
+
+Envoi d'un rapport de position : X:0 Y:0 Z:0

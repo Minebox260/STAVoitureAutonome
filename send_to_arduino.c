@@ -167,6 +167,7 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 	for (int i; i < 20; i++) {
 		buffer[i] = 0;
 	}
+	
 	int count = 0;
 	printf("---POINTS RECEIVED FOR VERIFICATION---\n");
 	while(1) {
@@ -188,13 +189,18 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 	for(int i = 0; i<5; i++) {
 		int firstIx = 4*i;
 		ndata[i] = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
-			 + ((int32_t)buffer[firstIx+1] << 8) + ((int32_t)buffer[firstIx]));
+				+ ((int32_t)buffer[firstIx+1] << 8) + ((int32_t)buffer[firstIx]));
         }
+    firstIx = 16;
+    //float on raspberry 4 bytes, double on arduino also 4 bytes
+	int32_t angle = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
+				+ ((int32_t)buffer[firstIx+1] << 8) + ((int32_t)buffer[firstIx]));
+
       
 	printf("VERIFICATION\ncurrent - x: %d, y: %d\n", ndata[0], ndata[1]);
-	printf("VERIFICATION\nnext - x: %d, y: %d\n", ndata[2], ndata[3]);
-	printf("VERIFICATION\nnext - x: %d, y: %d\n", ndata[4]);
-
+	printf("next - x: %d, y: %d\n", ndata[2], ndata[3]);
+	printf("angle: %d\n", angle);
+	
 }
 /*
 void send_next_point_to_arduino(int port, Point next, Point current) {

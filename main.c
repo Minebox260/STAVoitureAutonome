@@ -186,7 +186,7 @@ void *advance(void* arg) {
         
         if (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
 		    //send_stop_command(params->portArduino);
-            sleep(1);
+            //sleep(1);
             continue;
 	    }
 
@@ -291,9 +291,10 @@ int main(int argc, char *argv[]) {
     struct MarvelmindHedge * hedge;
     
     //bloquer threads de communication et de marvelmind en mode debug
-    if (DEBUG != 1) {
+    if (DEBUG_COMM != 1) {
         sd = setupUDP(argc, argv, &server_adr, &client_adr);
-    } else if (DEBUG_MM != 1) {
+    }
+    if (DEBUG_MM != 1) {
         hedge = setupHedge(argc, argv);
     }
        
@@ -316,6 +317,7 @@ int main(int argc, char *argv[]) {
     params->currentPoint.x = 0;
     params->currentPoint.y = 0;
 
+    //this gives a seg fault
     //for (int i = 0; i < NB_RESSOURCES; i++) params->reservedRessources[i] = 0;
     
     //charger carte en params
@@ -331,7 +333,7 @@ int main(int argc, char *argv[]) {
     }
 
     //in debug mode we give the final mission directly
-    if (DEBUG == 1) {
+    if (DEBUG_COMM == 1) {
         if (argc < 2) {
             printf("DEBUG MODE: ENTER X AND Y OF MISSION PLEASE!\n");
         }
@@ -349,7 +351,7 @@ int main(int argc, char *argv[]) {
     }
   
     //bloquer threads de communication en mode debug
-    if (DEBUG != 1) {
+    if (DEBUG_COMM != 1) {
         //recevoir continuellement des messages depuis le serveur
         if (pthread_create(&thread_id_receive, NULL, receive_data, (void*)params) != 0) {
             perror("pthread_create");

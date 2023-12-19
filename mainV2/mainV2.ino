@@ -1,9 +1,11 @@
+#include <TimerOne.h>
 #include <util/atomic.h>
 //#include "MeOrion.h"
 #include <MeMegaPi.h>
 #include <Wire.h>
 
-#define PI  3.141592653589793
+
+//#define PI  3.141592653589793
 
 
 double angleWrap(double angle);
@@ -76,6 +78,10 @@ void emptySerial() {
   }
 }
 
+void updateGyro() {
+  gyro.update();
+}
+
 // How many motors
 #define NMOTORS 2
 
@@ -130,17 +136,25 @@ int32_t y1;
 
 uint8_t buffer[16];
 uint8_t codeBuffer[1];
-int32_t data[4] = {x0, y0, x1, y1};
+const int dataSize = 4;
+int32_t data[dataSize] = {x0, y0, x1, y1};
 
-int velocity = 0;
+bool stopCommand = false;
 
 float delta_x;
 float delta_y;
-float targetAngle;
+double targetAngle = 0;
+int32_t targetAngleInt;
+int doubleSize = 4;
 
 void setup() {
   Serial.begin(115200);
   gyro.begin();
+  Wire.setClock(400000); //improve gyro accuracy  
+
+  //interrupt to update gyro
+  Timer1.initialize(5000); //every 5ms
+  Timer1.attachInterrupt(updateGyro);
 
   for(int k = 0; k < NMOTORS; k++){
     pinMode(enca[k],INPUT);
@@ -163,19 +177,20 @@ void setup() {
 
 
 void loop() {
-  //_________COMMUNICATION_____________________
-  //___________________________________________
-  //Serial.println("\nstart loop");
-  //lire le code
   
   blink(1,150);
 
+  //nothing received this iteration but communication already established
   if (Serial.available() == 0 && comm_established) {
-    //Serial.println("nothing received");
     code = 0;
-  } else if (Serial.available() == 0 && !comm_established) {
+  } 
+  //nothing received since the beginning
+  else if (Serial.available() == 0 && !comm_established) {
+    //we do nothing before we haven't received a next point
     return;
-  } else { //+1 for terminator
+  } 
+  //data received from the Raspberry
+  else {
     Serial.readBytes(codeBuffer, 1);
     code = (uint8_t)codeBuffer[0];
     emptySerial(); //get rid of extra input that might rest    
@@ -184,27 +199,25 @@ void loop() {
   
   if (code == 2) {
       //marvelmind doesn't work, motors have to be stopped
-      blink(10,50);
+      blink(5,500);
       acknowledge();
       comm_established = 1;
-      //moteur(0,pwm[0],in1[0],in2[0]);
-      //moteur(0,pwm[1],in1[1],in2[1]);
-      velocity = 0;
-      //emptySerial();
+      stopCommand = true;
+      
   } else if (code == 1) {
-      blink(10,50);
+      blink(5,500);
       
       acknowledge();
       comm_established = 1;
       
       while (Serial.available() < (4 * sizeof(int32_t))) {
-        //Serial.println(Serial.available());
         blink(1,25);
 
       }
       Serial.readBytes(buffer, 16);
       emptySerial();
-      velocity = 30;
+      
+      stopCommand = false;
       for(int i = 0; i<4; i++) {
         int firstIx = 4*i;
         data[i] = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
@@ -218,31 +231,30 @@ void loop() {
       
       delta_x = (x1 - x0);
       delta_y = (y1 - y0);
+
       
       targetAngle = atan2(delta_y,delta_x);
+      targetAngleInt = (int32_t)targetAngle;
       
       //debug code for checking the integers constructed
+
+      for(int j = 0; j < dataSize; j++) {
+        char * intptr = (char*)&data[j];
+        for(int k = 0; k < sizeof(int32_t); k++) {
+          //send each byte as a char seperately
+          Serial.write((uint8_t*)(intptr+k), 1);
+        }
+      }
       
-      char * intptr = (char*)&x0;
-      for(int32_t j = 0; j < sizeof(int32_t); j++) {
-        //send each byte as a char seperately
-        Serial.write((uint8_t*)(intptr+j), 1);
+      char * intptr = (char*)&targetAngleInt;
+      for(int j = 0; j < sizeof(int32_t); j++) {
+        Serial.write((uint8_t*)(intptr+j), 1);        
       }
-      intptr = (char*)&y0;
-      for(int32_t j = 0; j < sizeof(int32_t); j++) {
-        //send each byte as a char seperately
-        Serial.write((uint8_t*)(intptr+j), 1);
-      }
-      intptr = (char*)&x1;
-      for(int32_t j = 0; j < sizeof(int32_t); j++) {
-        //send each byte as a char seperately
-        Serial.write((uint8_t*)(intptr+j), 1);
-      }
-      intptr = (char*)&y1;
-      for(int32_t j = 0; j < sizeof(int32_t); j++) {
-        //send each byte as a char seperately
-        Serial.write((uint8_t*)(intptr+j), 1);
-      }  
+      
+      
+      /*//angle
+      intptr = (char*)&targetAngle;
+      */
   }
 
 
@@ -253,24 +265,15 @@ void loop() {
   //Serial.print(" y1 ="); Serial.println(y1);
     
 
-
-
-
-
-
-  //___________________________________________
-  gyro.update();
-
-
   //float targetAngle = 45;
   /*Serial.print(" AngleTarget:");
   Serial.println(targetAngle );
 
 
-  Serial.print(" AngleActuel:");
-  Serial.println(gyro.getAngleZ() );
+  Serial.print(" AngleActuel:");*/
+  //Serial.println(gyro.getAngleZ() );
+  //Serial.println(targetAngle);
   
-  */
 
   // time difference
   long currT = micros();
@@ -281,13 +284,15 @@ void loop() {
   double pwr = pidAngle.evalu(gyro.getAngleZ(), targetAngle, deltaT);
   //Serial.print(" PWR:");
   //Serial.println(pwr );
-  if (1 != 0) {
-    moteur(30 - pwr,pwm[0],in1[0],in2[0]);
-    moteur(30 + pwr,pwm[1],in1[1],in2[1]);
-  } else {
+
+  if (stopCommand == true) {
     moteur(0,pwm[0],in1[0],in2[0]);
     moteur(0,pwm[1],in1[1],in2[1]);
+    return;
   }
+  moteur(30 - pwr,pwm[0],in1[0],in2[0]);
+  moteur(30 + pwr,pwm[1],in1[1],in2[1]);
+  
   //Serial.println("end of loop");
 
 }
@@ -308,7 +313,7 @@ void moteur(int valeur, int pwm, int in1, int in2)
     analogWrite(pwm,constrain( 0 ,0,0));
     return;
   }
-  analogWrite(pwm,constrain( abs(valeur) ,35,100));
+  analogWrite(pwm,constrain( abs(valeur) ,0,100));
   
 }
 
