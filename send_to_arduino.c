@@ -163,8 +163,8 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 	time_t start, now;
 	start = time(NULL);
 	int timeout = 1;
-	uint8_t buffer[16];
-	for (int i; i < 16; i++) {
+	uint8_t buffer[20];
+	for (int i; i < 20; i++) {
 		buffer[i] = 0;
 	}
 	int count = 0;
@@ -184,8 +184,8 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 		}
 	}
 	printf("\n");
-	int32_t ndata[4];
-	for(int i = 0; i<4; i++) {
+	int32_t ndata[5];
+	for(int i = 0; i<5; i++) {
 		int firstIx = 4*i;
 		ndata[i] = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
 			 + ((int32_t)buffer[firstIx+1] << 8) + ((int32_t)buffer[firstIx]));
@@ -193,6 +193,7 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
       
 	printf("VERIFICATION\ncurrent - x: %d, y: %d\n", ndata[0], ndata[1]);
 	printf("VERIFICATION\nnext - x: %d, y: %d\n", ndata[2], ndata[3]);
+	printf("VERIFICATION\nnext - x: %d, y: %d\n", ndata[4]);
 
 }
 /*

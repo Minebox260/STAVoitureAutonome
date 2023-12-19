@@ -276,10 +276,8 @@ void loop() {
   long currT = micros();
   float deltaT = ((float) (currT - prevT))/( 1.0e6 );
   prevT = currT;
-  
-  
 
- 
+
   double pwr = pidAngle.evalu(gyro.getAngleZ(), targetAngle, deltaT);
   //Serial.print(" PWR:");
   //Serial.println(pwr );
@@ -291,7 +289,6 @@ void loop() {
     moteur(0,pwm[1],in1[1],in2[1]);
   }
   //Serial.println("end of loop");
-
 
 }
  
