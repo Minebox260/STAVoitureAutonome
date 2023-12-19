@@ -78,10 +78,6 @@ void emptySerial() {
   }
 }
 
-void updateGyro() {
-  gyro.update();
-}
-
 // How many motors
 #define NMOTORS 2
 
@@ -147,14 +143,20 @@ double targetAngle = 0;
 int32_t targetAngleInt;
 int doubleSize = 4;
 
+
+void updateGyro() {
+  gyro.update();
+}
+
+
 void setup() {
   Serial.begin(115200);
   gyro.begin();
   Wire.setClock(400000); //improve gyro accuracy  
 
   //interrupt to update gyro
-  Timer1.initialize(5000); //every 5ms
-  Timer1.attachInterrupt(updateGyro);
+  //Timer1.initialize(5000); //every 5ms
+  //Timer1.attachInterrupt(updateGyro);
 
   for(int k = 0; k < NMOTORS; k++){
     pinMode(enca[k],INPUT);
@@ -178,7 +180,8 @@ void setup() {
 
 void loop() {
   
-  blink(1,150);
+  blink(1,50);
+  updateGyro(); //continually updating gyro
 
   //nothing received this iteration but communication already established
   if (Serial.available() == 0 && comm_established) {
@@ -202,9 +205,9 @@ void loop() {
       blink(5,500);
       acknowledge();
       comm_established = 1;
-      stopCommand = true;
-      
-  } else if (code == 1) {
+      stopCommand = true;   
+  } 
+  else if (code == 1) {
       blink(5,500);
       
       acknowledge();
@@ -212,12 +215,13 @@ void loop() {
       
       while (Serial.available() < (4 * sizeof(int32_t))) {
         blink(1,25);
-
       }
+
       Serial.readBytes(buffer, 16);
       emptySerial();
       
       stopCommand = false;
+
       for(int i = 0; i<4; i++) {
         int firstIx = 4*i;
         data[i] = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
@@ -234,6 +238,8 @@ void loop() {
 
       
       targetAngle = atan2(delta_y,delta_x);
+      targetAngle = (targetAngle * 360) / (2*PI); //converting rads to degrees
+
       targetAngleInt = (int32_t)targetAngle;
       
       //debug code for checking the integers constructed
