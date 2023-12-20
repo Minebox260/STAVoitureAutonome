@@ -221,8 +221,6 @@ void loop() {
       Serial.readBytes(buffer, 16);
       emptySerial();
       
-      stopCommand = false;
-
       for(int i = 0; i<4; i++) {
         int firstIx = 4*i;
         data[i] = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
@@ -233,6 +231,8 @@ void loop() {
       x1 = data[2];
       y1 = data[3];
 
+      stopCommand = false;
+
       
       delta_x = (x1 - x0);
       delta_y = (y1 - y0);
@@ -242,9 +242,9 @@ void loop() {
       targetAngle = (targetAngle * 360) / (2*PI); //converting rads to degrees
 
       targetAngleInt = (int32_t)targetAngle;
-      Serial.print(targetAngle);
+      /*Serial.print(targetAngle);
       Serial.print(" ");
-      Serial.println(targetAngleInt);
+      Serial.println(targetAngleInt);*/
       
       //debug code for checking the integers constructed
 
@@ -274,27 +274,25 @@ void loop() {
   //Serial.println(gyro.getAngleZ() );
   //Serial.println(targetAngle);
   
-      x0 = 0;
-      y0 = 0;
-      x1 = 1;
-      y1 = -2;
+  /*x0 = 0;
+  y0 = 0;
+  x1 = 1;
+  y1 = -2;
 
-      
-      delta_x = (x1 - x0);
-      delta_y = (y1 - y0);
-
-      
-      targetAngle = atan2(delta_y,delta_x);
-      targetAngle = (targetAngle * 360) / (2*PI); //converting rads to degrees
-
-      targetAngleInt = (int32_t)targetAngle;
-      Serial.print(targetAngle);
-      Serial.print(" ");
-      Serial.print(gyro.getAngleZ());
-      Serial.print(" ");
-      Serial.println(targetAngleInt);
-      
   
+  delta_x = (x1 - x0);
+  delta_y = (y1 - y0);
+
+  
+  targetAngle = atan2(delta_y,delta_x);
+  targetAngle = (targetAngle * 360) / (2*PI); //converting rads to degrees
+
+  targetAngleInt = (int32_t)targetAngle;
+  Serial.print(targetAngle);
+  Serial.print(" ");
+  Serial.print(gyro.getAngleZ());
+  Serial.print(" ");
+  Serial.println(targetAngleInt);*/
 
   // time difference
   long currT = micros();
