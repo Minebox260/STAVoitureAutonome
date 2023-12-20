@@ -1,8 +1,5 @@
 #include "send_to_arduino.h"
 
-int END_OF_LINE_X;
-int END_OF_LINE_Y;
-
 #define ARDUINO_SERIAL_DEVICE "/dev/ttyUSB0"
 
 int serial_ouvert()
@@ -136,8 +133,8 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 	if (DEBUG_STRAIGHT == 1) {
 		//current.x = START_OF_LINE_X;
 		//current.y = START_OF_LINE_Y;
-		next.x = END_OF_LINE_X;
-		next.y = END_OF_LINE_Y;
+		next.x = 886;
+		next.y = 3323;
 		printf("NEXT X: %d, NEXT Y: %d\n",next.x,next.y);
 	}
 	

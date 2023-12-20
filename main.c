@@ -5,8 +5,6 @@
 #include "extraction_point.h"
 #include "send_to_arduino.h"
 
-int END_OF_LINE_X;
-int END_OF_LINE_Y;
 
 void attendre(clock_t start, float time_in_ms) {
   while ((float)(clock() - start)/(float)CLOCKS_PER_SEC * 1000 < time_in_ms);
@@ -341,8 +339,8 @@ int main(int argc, char *argv[]) {
             printf("DEBUG MODE: ENTER X AND Y OF MISSION PLEASE!\n");
         }
         struct Point * mission = parse_point(argv[1],argv[2]);
-        END_OF_LINE_X = argv[1];
-        END_OF_LINE_Y = argv[2];
+        params->END_OF_LINE_X = argv[1];
+        params->END_OF_LINE_Y = argv[2];
 
         printf("\n---WAITING FOR MARVELMINDS---\n\n");  
 

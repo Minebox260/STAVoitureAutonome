@@ -1,10 +1,8 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-extern int END_OF_LINE_X;
-extern int END_OF_LINE_Y;
-
-//1840 3323
+//#define END_OF_LINE_X 1840
+//#define END_OF_LINE_Y 3323
 
 //#define END_OF_LINE_X 0
 //#define END_OF_LINE_Y 0
