@@ -56,6 +56,7 @@ void * receive_data(void * arg) {
 
 void * send_data(char data[MAX_OCTETS], struct PARAMS params) {
     int nbcar;
+    printf("Sent %s", data);
     nbcar=sendto(params.sd, data,MAX_OCTETS+1,0,(const struct sockaddr *) params.server_adr,sizeof(*params.server_adr));
     CHECK_ERROR(nbcar,0,"\nErreur lors de l'émission des données");
     return EXIT_SUCCESS;
