@@ -1,5 +1,8 @@
 #include "send_to_arduino.h"
 
+int END_OF_LINE_X;
+int END_OF_LINE_Y;
+
 #define ARDUINO_SERIAL_DEVICE "/dev/ttyUSB0"
 
 int serial_ouvert()

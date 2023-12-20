@@ -1,8 +1,8 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-int END_OF_LINE_X;
-int END_OF_LINE_Y;
+extern int END_OF_LINE_X;
+extern int END_OF_LINE_Y;
 
 //1840 3323
 

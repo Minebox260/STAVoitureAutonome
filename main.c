@@ -5,6 +5,9 @@
 #include "extraction_point.h"
 #include "send_to_arduino.h"
 
+int END_OF_LINE_X;
+int END_OF_LINE_Y;
+
 void attendre(clock_t start, float time_in_ms) {
   while ((float)(clock() - start)/(float)CLOCKS_PER_SEC * 1000 < time_in_ms);
 }
