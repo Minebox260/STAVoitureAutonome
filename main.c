@@ -338,6 +338,8 @@ int main(int argc, char *argv[]) {
             printf("DEBUG MODE: ENTER X AND Y OF MISSION PLEASE!\n");
         }
         struct Point * mission = parse_point(argv[1],argv[2]);
+        END_OF_LINE_X = argv[1];
+        END_OF_LINE_Y = argv[2];
 
         printf("\n---WAITING FOR MARVELMINDS---\n\n");  
 
