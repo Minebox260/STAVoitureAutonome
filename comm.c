@@ -86,11 +86,11 @@ void * handle_request(void * arg) {
       case 202:
         break;
       case 203:
-        ptr = strtok(data->request, ":");
+        ptr = strtok(NULL, ":");
         ressource = atoi(ptr);
         data->params->reservedRessources[ressource] = 1;
       case 204:
-        ptr = strtok(data->request, ":");
+        ptr = strtok(NULL, ":");
         ressource = atoi(ptr);
         data->params->reservedRessources[ressource] = 0;
       case 403:
