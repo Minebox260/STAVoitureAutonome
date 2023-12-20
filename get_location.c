@@ -88,7 +88,7 @@ void * get_location (void* arg) {
         
                 
         
-        printf("\npos MM x: %d, pos y: %d\n",mobPos->x,mobPos->y);
+        //printf("\npos MM x: %d, pos y: %d\n",mobPos->x,mobPos->y);
         //free(params->pos);
         /*
         if (mobPos->x == 0 && mobPos->y == 0) {

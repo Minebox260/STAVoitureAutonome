@@ -47,6 +47,14 @@ int open_comm_arduino() {
 	return arduino_fd;
 }
 
+void emptySerial(int port) {
+	char _;
+	while (serialDataAvail(port) > 0) {
+			printf("\nemptied\n\n");
+			_ = serialGetchar(port);
+	}
+}
+	
 //Call seperateley for each integer you want to send
 //code 1: send next position
 //code 2: stop 
@@ -87,10 +95,10 @@ int send_code_to_arduino(int port, int16_t code) {
 		current = time(NULL);
 		duration = difftime(current,start);
 		if (duration >= timeout) {
+			emptySerial(port);
 			return 2;
 		}
 	}
-	return 0;
 }
 
 void send_stop_command(int port) {
@@ -117,10 +125,7 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 	
 	int codeOutput = send_code_to_arduino(port, 1);
 
-	if(codeOutput==0) {
-		printf("no ACK received ERROR\n");
-		return;
-	} else if (codeOutput==2) {
+	if (codeOutput==2) {
 		printf("ACK receive timed out ERROR\n");
 		return;
 	}
@@ -163,8 +168,9 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 	time_t start, now;
 	start = time(NULL);
 	int timeout = 1;
-	uint8_t buffer[20];
-	for (int i; i < 20; i++) {
+	int numInt = 6;
+	uint8_t buffer[numInt*sizeof(int32_t)];
+	for (int i; i < numInt*sizeof(int32_t); i++) {
 		buffer[i] = 0;
 	}
 	
@@ -185,23 +191,28 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 		}
 	}
 	printf("\n");
-	int32_t ndata[5];
+	int32_t ndata[numInt];
 	int firstIx;
-	for(int i = 0; i<5; i++) {
+	for(int i = 0; i<numInt; i++) {
 		firstIx = 4*i;
 		ndata[i] = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
 				+ ((int32_t)buffer[firstIx+1] << 8) + ((int32_t)buffer[firstIx]));
         }
-    firstIx = 16;
+    firstIx = 4*sizeof(int32_t);
     //float on raspberry 4 bytes, double on arduino also 4 bytes
 	int32_t angle = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
 				+ ((int32_t)buffer[firstIx+1] << 8) + ((int32_t)buffer[firstIx]));
 
-      
+    firstIx = 5*sizeof(int32_t);
+    //float on raspberry 4 bytes, double on arduino also 4 bytes
+	int32_t angleGyro = (((int32_t)buffer[firstIx+3] << 24) + ((int32_t)buffer[firstIx+2] << 16)\
+				+ ((int32_t)buffer[firstIx+1] << 8) + ((int32_t)buffer[firstIx]));
+
+  
 	printf("VERIFICATION\ncurrent - x: %d, y: %d\n", ndata[0], ndata[1]);
 	printf("next - x: %d, y: %d\n", ndata[2], ndata[3]);
-	printf("angle: %d\n", angle);
-	
+	printf("targetAngle: %d\n", angle);
+	printf("gyro: %d\n", angleGyro);
 	
 }
 /*

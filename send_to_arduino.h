@@ -11,6 +11,8 @@ void send_to_arduino(int port, int16_t code);
 
 void send_stop_command(int port);
 
+void emptySerial();
+
 void send_next_point_to_arduino(int port, Point next, Point current);
 
 void close_comm_arduino(int port);

@@ -4,7 +4,7 @@
 #include <Wire.h>
 
 
-#define DEBUG true
+#define DEBUG false
 
 
 double angleWrap(double angle);
@@ -151,7 +151,7 @@ void updateGyro() {
 void setup() {
   Serial.begin(115200);
   gyro.begin();
-  Wire.setClock(400000); //improve gyro accuracy  
+  //Wire.setClock(400000); //improve gyro accuracy  
 
   //interrupt to update gyro
   //Timer1.initialize(5000); //every 5ms
@@ -179,7 +179,7 @@ void setup() {
 
 void loop() {
   
-  blink(1,50);
+  blink(1,150);
   updateGyro(); //continually updating gyro
 
   //nothing received this iteration but communication already established
@@ -203,19 +203,19 @@ void loop() {
   
   if (code == 2) {
       //marvelmind doesn't work, motors have to be stopped
-      blink(5,500);
+      blink(5,50);
       acknowledge();
       comm_established = 1;
       stopCommand = true;   
   } 
   else if (code == 1) {
-      blink(5,500);
+      blink(5,50);
       
       acknowledge();
       comm_established = 1;
       
       while (Serial.available() < (4 * sizeof(int32_t))) {
-        blink(1,25);
+        blink(1,15);
       }
 
       Serial.readBytes(buffer, 16);
@@ -247,6 +247,7 @@ void loop() {
       Serial.println(targetAngleInt);*/
       
       //debug code for checking the integers constructed
+      //emptySerial();
 
       for(int j = 0; j < dataSize; j++) {
         char * intptr = (char*)&data[j];
@@ -257,6 +258,13 @@ void loop() {
       }
       
       char * intptr = (char*)&targetAngleInt;
+      for(int j = 0; j < sizeof(int32_t); j++) {
+        Serial.write((uint8_t*)(intptr+j), 1);        
+      }
+      float currentAngle = angleWrap(gyro.getAngleZ());
+      int32_t currentAngleInt = (int32_t)currentAngle;
+      
+      intptr = (char*)&currentAngleInt;
       for(int j = 0; j < sizeof(int32_t); j++) {
         Serial.write((uint8_t*)(intptr+j), 1);        
       }
@@ -300,7 +308,7 @@ void loop() {
   prevT = currT;
 
 
-  double pwr = pidAngle.evalu(gyro.getAngleZ(), targetAngle, deltaT);
+  double pwr = pidAngle.evalu(angleWrap(gyro.getAngleZ()), targetAngle, deltaT);
   //Serial.print(" PWR:");
   //Serial.println(pwr );
 
@@ -342,9 +350,9 @@ double angleWrap(double angle){
   while(angle > 180){
     angle -= 360; 
   }
-  while(angle < 180){
-    angle += 360; 
-  }
+  //while(angle < 180){
+  //  angle += 360; 
+  //}
 
   return angle;
 }
