@@ -261,7 +261,7 @@ void loop() {
       for(int j = 0; j < sizeof(int32_t); j++) {
         Serial.write((uint8_t*)(intptr+j), 1);        
       }
-      float currentAngle = gyro.getAngleZ();
+      float currentAngle = angleWrap(gyro.getAngleZ());
       int32_t currentAngleInt = (int32_t)currentAngle;
       
       intptr = (char*)&currentAngleInt;
@@ -308,7 +308,7 @@ void loop() {
   prevT = currT;
 
 
-  double pwr = pidAngle.evalu(gyro.getAngleZ(), targetAngle, deltaT);
+  double pwr = pidAngle.evalu(angleWrap(gyro.getAngleZ()), targetAngle, deltaT);
   //Serial.print(" PWR:");
   //Serial.println(pwr );
 
