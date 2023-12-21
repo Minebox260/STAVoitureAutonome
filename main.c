@@ -214,7 +214,7 @@ void *advance(void* arg) {
         //put next point in params->next_goal
         calculate_next_point(params);
         
-        send_next_point_to_arduino(params->portArduino, params->next_goal, params->currentPoint);
+        send_next_point_to_arduino(params, params->portArduino, params->next_goal, params->currentPoint);
         //wait for arduino to do a loop
         //sleep(5);
     }
