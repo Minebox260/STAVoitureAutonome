@@ -94,6 +94,8 @@ struct PARAMS{
     struct Point next_goal;
     int indice_next_goal;
     int reservedRessources[NB_RESSOURCES];
+    int END_OF_LINE_X;
+    int END_OF_LINE_Y;
 };
 
 void attendre(clock_t start, float time_in_ms);

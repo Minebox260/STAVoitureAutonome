@@ -115,7 +115,7 @@ void send_stop_command(int port) {
 	}
 }
 
-void send_next_point_to_arduino(int port, Point next, Point current) {
+void send_next_point_to_arduino(struct PARAMS * params, int port, Point next, Point current) {
 	printf("\n---START COMM ARDUINO---\n");
 
 	if (current.x == 0 && current.y == 0) {
@@ -133,8 +133,8 @@ void send_next_point_to_arduino(int port, Point next, Point current) {
 	if (DEBUG_STRAIGHT == 1) {
 		//current.x = START_OF_LINE_X;
 		//current.y = START_OF_LINE_Y;
-		next.x = 886;
-		next.y = 3323;
+		next.x = params->END_OF_LINE_X;//886;
+		next.y = params->END_OF_LINE_Y;//3323;
 		printf("NEXT X: %d, NEXT Y: %d\n",next.x,next.y);
 	}
 	
