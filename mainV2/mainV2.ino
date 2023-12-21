@@ -68,7 +68,6 @@ void blink(int times, int pause) {
     digitalWrite(LED_BUILTIN, LOW);
     delay(pause);
   }
-  
 }
 
 void emptySerial() {
@@ -190,10 +189,7 @@ void loop() {
   else if (Serial.available() == 0 && !comm_established) {
     //we do nothing before we haven't received a next point
     code = 0;
-
-    if (DEBUG == false) {
-      return;
-    }
+    return;
   } 
   //data received from the Raspberry
   else {
@@ -214,6 +210,8 @@ void loop() {
       blink(10,50);
       
       acknowledge();
+      blink(10,50);
+
       comm_established = 1;
       
       while (Serial.available() < (4 * sizeof(int32_t))) {
