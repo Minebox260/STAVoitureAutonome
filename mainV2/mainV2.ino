@@ -177,7 +177,7 @@ void setup() {
 
 void loop() {
   
-  //blink(1,150);
+  blink(1,50);
   updateGyro(); //continually updating gyro
 
   //nothing received this iteration but communication already established
