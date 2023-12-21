@@ -80,18 +80,18 @@ void * handle_request(void * arg) {
         //mission = parse_point(strtok(NULL,":"),strtok(NULL,":")); //apparamment il faut mettre NULL pour qu'il continue avec le meme buffer
        //generates the trajectory and stores it in params
         
-        params->END_OF_LINE_X = atoi(strtok(NULL,":"));
-        params->END_OF_LINE_Y = atoi(strtok(NULL,":"));
+        data->params->END_OF_LINE_X = atoi(strtok(NULL,":"));
+        data->params->END_OF_LINE_Y = atoi(strtok(NULL,":"));
         struct Point * mission = (struct Point *)(malloc(sizeof(struct Point)));
-        mission->x = params->END_OF_LINE_X;
-        mission->y = params->END_OF_LINE_Y;
+        mission->x = data->params->END_OF_LINE_X;
+        mission->y = data->params->END_OF_LINE_Y;
 
         printf("\n---WAITING FOR MARVELMINDS---\n\n");  
 
         while (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
             //waiting that marvelmind doesn't send 0
         }
-        
+
         printf("\n---CALCULATING TRAJECTORY---\n\n");
         printf("Sending starting point to traj function:\nx: %d\ny: %d\n",params->currentPoint.x,params->currentPoint.y);
         Trajectory(params, *mission);
