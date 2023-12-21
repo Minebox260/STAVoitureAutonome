@@ -56,7 +56,6 @@ double evalu(int value, int target, float deltaT){
 void acknowledge() {
   delay(50);
   Serial.println("ACK");
-  Serial.flush();
   delay(50);
 };
 
@@ -210,6 +209,7 @@ void loop() {
       blink(10,50);
       
       acknowledge();
+
       blink(10,50);
 
       comm_established = 1;
@@ -247,7 +247,7 @@ void loop() {
       Serial.println(targetAngleInt);*/
       
       //debug code for checking the integers constructed
-      //emptySerial();
+      emptySerial();
 
       for(int j = 0; j < dataSize; j++) {
         char * intptr = (char*)&data[j];
