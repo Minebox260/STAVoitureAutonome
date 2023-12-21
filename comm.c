@@ -88,13 +88,13 @@ void * handle_request(void * arg) {
 
         printf("\n---WAITING FOR MARVELMINDS---\n\n");  
 
-        while (params->currentPoint.x == 0 && params->currentPoint.y == 0) {
+        while (data->params->currentPoint.x == 0 && data->params->currentPoint.y == 0) {
             //waiting that marvelmind doesn't send 0
         }
 
         printf("\n---CALCULATING TRAJECTORY---\n\n");
-        printf("Sending starting point to traj function:\nx: %d\ny: %d\n",params->currentPoint.x,params->currentPoint.y);
-        Trajectory(params, *mission);
+        printf("Sending starting point to traj function:\nx: %d\ny: %d\n",data->params->currentPoint.x,data->params->currentPoint.y);
+        Trajectory(data->params, *mission);
         //Trajectory(data->params, *mission);
         resp_code = 205;
         itoa(resp_code, resp);
