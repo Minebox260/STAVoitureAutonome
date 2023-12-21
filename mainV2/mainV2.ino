@@ -205,13 +205,13 @@ void loop() {
   
   if (code == 2) {
       //marvelmind doesn't work, motors have to be stopped
-      blink(5,50);
+      blink(10,50);
       acknowledge();
       comm_established = 1;
       stopCommand = true;   
   } 
   else if (code == 1) {
-      blink(5,50);
+      blink(10,50);
       
       acknowledge();
       comm_established = 1;
