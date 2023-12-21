@@ -62,6 +62,7 @@ void acknowledge() {
 
 void blink(int times, int pause) {
   for(int i = 0; i < times; i++) {
+    updateGyro();
     digitalWrite(LED_BUILTIN, HIGH);
     delay(pause);
     digitalWrite(LED_BUILTIN, LOW);
