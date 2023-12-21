@@ -134,9 +134,9 @@ void send_next_point_to_arduino(struct PARAMS * params, int port, Point next, Po
 	if (DEBUG_STRAIGHT == 1) {
 		//current.x = START_OF_LINE_X;
 		//current.y = START_OF_LINE_Y;
-		next.x = params->END_OF_LINE_X;//886;
-		next.y = params->END_OF_LINE_Y;//3323;
-		printf("NEXT X: %d, NEXT Y: %d\n",next.x,next.y);
+		//next.x = params->END_OF_LINE_X;//886;
+		//next.y = params->END_OF_LINE_Y;//3323;
+		//printf("NEXT X: %d, NEXT Y: %d\n",next.x,next.y);
 	}
 	
 	int32_t data[4] = {(int32_t)current.x, (int32_t)current.y, (int32_t)next.x, (int32_t)next.y};
