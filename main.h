@@ -89,6 +89,8 @@ struct PARAMS{
     int nb_points; //nombre points de la carte
     struct MarvelmindHedge * hedge;
     struct Point * chemin;
+    int nb_points_chemin;
+    int nb_points_traversed;
     //TRAJECTOIRE
     struct Point last_goal;
     struct Point next_goal;

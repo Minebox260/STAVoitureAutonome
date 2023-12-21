@@ -5,6 +5,68 @@
 #include "extraction_point.h"
 #include "send_to_arduino.h"
 
+int setupUDP(int argc, char * argv[], struct sockaddr_in * server_adr, struct sockaddr_in * client_adr) {
+    int sd;                    // Descripteur de la socket
+    int erreur;                // Gestion des erreurs
+    socklen_t len_addr = sizeof(*client_adr);
+    char recv_buff[MAX_OCTETS+1];
+    char * ptr;
+    char * client_adr_str;
+    int code;
+    int nb_tries = 0;
+    char hostbuffer[MAX_OCTETS];
+    struct hostent *host_entry;
+    if (argc < 3){
+      printf("Utilisation : ./client.exe <IP Serveur> <Port Serveur>");
+      exit(EXIT_FAILURE);
+    }
+
+    // Récupération de l'adresse IP de la machine
+
+    // To retrieve hostname
+    gethostname(hostbuffer, sizeof(hostbuffer));
+    strcat(hostbuffer, ".local");
+    // To retrieve host information
+    host_entry = gethostbyname(hostbuffer);
+    client_adr_str = inet_ntoa(*((struct in_addr*) host_entry->h_addr_list[0]));
+    printf("STARTING CLIENT ON %s\n", client_adr_str);
+    
+    sd = socket(AF_INET, SOCK_DGRAM, 0); // Créer une socket UDP
+    CHECK_ERROR(sd, -1, "Erreur lors de la création de la socket\n");
+    printf("Numéro de la socket : %d\n", sd);
+
+    server_adr->sin_family = AF_INET;
+    server_adr->sin_port = htons(atoi(argv[2]));
+    server_adr->sin_addr.s_addr = inet_addr(argv[1]);
+
+    client_adr->sin_family = AF_INET;
+    client_adr->sin_port = htons(0);
+    client_adr->sin_addr.s_addr = inet_addr(client_adr_str);
+
+    erreur = bind(sd,(const struct sockaddr *)client_adr, len_addr);
+    CHECK_ERROR(erreur, -1, "Erreur lors du bind de socket\n");
+
+    //Enregistrement auprès du serveur
+    printf("Connexion au serveur : %s:%d\n", inet_ntoa(server_adr->sin_addr), atoi(argv[2]));
+    while(1) {
+        printf("Enregistrement auprès du serveur...\n");
+        // Envoi code 101
+        sendto(sd, "101", 4, 0, (const struct sockaddr *)server_adr, sizeof(*server_adr));
+        recvfrom(sd, recv_buff, MAX_OCTETS+1, 0, NULL, NULL);
+        printf("Réponse reçue: %s\n", recv_buff);
+        ptr = strtok(recv_buff, ":");
+        code = atoi(ptr);
+        if (code==201 || code==401) break;
+      
+        nb_tries++;
+        if (nb_tries >= 3) {
+          printf("Impossible de se connecter au serveur\n");
+          exit(EXIT_FAILURE);
+        }
+        sleep(1);
+    }
+    return sd;
+}
 
 void attendre(clock_t start, float time_in_ms) {
   while ((float)(clock() - start)/(float)CLOCKS_PER_SEC * 1000 < time_in_ms);
@@ -41,65 +103,17 @@ void* send_pos_to_server(void* arg) {
     pthread_exit(NULL);
 }
 
-/*
-//OLD ADVANCE FUNCTION
-void* send_next_point_to_arduino(void* arg) {
-    struct PARAMS * params = (struct PARAMS*)arg;
-    if(params->next_goal.x == -1) {
-        printf("ENTER A MISSION PLEASE!\n");
-        sleep(1);
-        return NULL;
-    }
-    struct PositionValue * pos = params->pos;
-    //temporary Point struct to be able to use distance()
-    struct Point actuel;
-    actuel.x = pos->x;
-    actuel.y = pos->y;
-    //value to be communicated to the Arduino
-    struct Point next;
-    //EXTRAIRE LE PROCHAIN POINT DE TRAJECTOIRE
-    if (distance(actuel, params->last_goal) > distance(actuel, params->next_goal)){
-        params->last_goal = params->next_goal;
-        params->indice_next_goal ++;
-        params->next_goal = params->chemin[params->indice_next_goal];
-    }
-    
-    //ENVOYER À L'ARDUINO
-    int serialPort;
-    
-    if ((serialPort = serialOpen("/dev/ttyS0", 9600)) < 0) {
-        fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
-        return 1;
-    }
-
-    while (1) {
-        // Send the numbers to the Arduino
-        serialPrintf(serialPort, "%d %d %d %d\n", pos->x, pos->y, params->next_goal.x, params->next_goal.y);
-
-        // Wait for the Arduino to process and respond
-        usleep(100000);
-
-        // Read and print the result from the Arduino
-        char resp[100];
-        int i = 0;
-        while (serialDataAvail(serialPort) > 0) {
-            printf("Result from Arduino: %c", serialGetchar(serialPort));
-            resp[i] = serialGetchar(serialPort);
-        }
-        if (strcmp(resp, "ACK") == 0) {
-                //
-        } else {
-            printf("ERROR IN TRANSMISSION TO ARDUINO\n");
-        }
-    }
-}
-*/
-
 void calculate_next_point(struct PARAMS * params) {
     Point actuel = params->currentPoint;
     //Point last = params->last_goal;
     Point next = params->next_goal;
     int dist_min = 500;
+
+    if (params->nb_points_traversed >= params->nb_points_chemin) {
+        printf("\nEND REACHED\n\n");
+        exit(0);
+    }
+
     printf("current x: %d, y: %d\n", actuel.x, actuel.y);
     //printf("last x: %d, y: %d\n", last.x, last.y);
     
@@ -110,6 +124,7 @@ void calculate_next_point(struct PARAMS * params) {
         //params->last_goal = next;
         
         params->indice_next_goal ++;
+        params->nb_points_traversed += 1;
         params->next_goal = params->chemin[params->indice_next_goal];
         printf("next goal CHANGED x: %d, y: %d\n",next.x,next.y);
     }
@@ -175,6 +190,7 @@ int isNextPointAllowed(struct PARAMS * params, Point nextPoint) {
 
 void *advance(void* arg) {
     struct PARAMS * params = (struct PARAMS*)arg;
+    params->nb_points_traversed = 0;
 
 
     while(params->next_goal.x == -1) {
@@ -203,70 +219,6 @@ void *advance(void* arg) {
         //sleep(5);
     }
     
-}
-
-
-int setupUDP(int argc, char * argv[], struct sockaddr_in * server_adr, struct sockaddr_in * client_adr) {
-    int sd;                    // Descripteur de la socket
-    int erreur;                // Gestion des erreurs
-    socklen_t len_addr = sizeof(*client_adr);
-    char recv_buff[MAX_OCTETS+1];
-    char * ptr;
-    char * client_adr_str;
-    int code;
-    int nb_tries = 0;
-    char hostbuffer[MAX_OCTETS];
-    struct hostent *host_entry;
-    if (argc < 3){
-      printf("Utilisation : ./client.exe <IP Serveur> <Port Serveur>");
-      exit(EXIT_FAILURE);
-    }
-
-    // Récupération de l'adresse IP de la machine
-
-    // To retrieve hostname
-    gethostname(hostbuffer, sizeof(hostbuffer));
-    strcat(hostbuffer, ".local");
-    // To retrieve host information
-    host_entry = gethostbyname(hostbuffer);
-    client_adr_str = inet_ntoa(*((struct in_addr*) host_entry->h_addr_list[0]));
-    printf("STARTING CLIENT ON %s\n", client_adr_str);
-    
-    sd = socket(AF_INET, SOCK_DGRAM, 0); // Créer une socket UDP
-    CHECK_ERROR(sd, -1, "Erreur lors de la création de la socket\n");
-    printf("Numéro de la socket : %d\n", sd);
-
-    server_adr->sin_family = AF_INET;
-    server_adr->sin_port = htons(atoi(argv[2]));
-    server_adr->sin_addr.s_addr = inet_addr(argv[1]);
-
-    client_adr->sin_family = AF_INET;
-    client_adr->sin_port = htons(0);
-    client_adr->sin_addr.s_addr = inet_addr(client_adr_str);
-
-    erreur = bind(sd,(const struct sockaddr *)client_adr, len_addr);
-    CHECK_ERROR(erreur, -1, "Erreur lors du bind de socket\n");
-
-    //Enregistrement auprès du serveur
-    printf("Connexion au serveur : %s:%d\n", inet_ntoa(server_adr->sin_addr), atoi(argv[2]));
-    while(1) {
-        printf("Enregistrement auprès du serveur...\n");
-        // Envoi code 101
-        sendto(sd, "101", 4, 0, (const struct sockaddr *)server_adr, sizeof(*server_adr));
-        recvfrom(sd, recv_buff, MAX_OCTETS+1, 0, NULL, NULL);
-        printf("Réponse reçue: %s\n", recv_buff);
-        ptr = strtok(recv_buff, ":");
-        code = atoi(ptr);
-        if (code==201 || code==401) break;
-      
-        nb_tries++;
-        if (nb_tries >= 3) {
-          printf("Impossible de se connecter au serveur\n");
-          exit(EXIT_FAILURE);
-        }
-        sleep(1);
-    }
-    return sd;
 }
 
 int main(int argc, char *argv[]) {

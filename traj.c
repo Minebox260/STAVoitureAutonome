@@ -41,6 +41,7 @@ int trouverPointPlusProche(Point carte[], int n, int pointInit,
 void Trajectory(struct PARAMS *params, Point point_final) {
   printf("Entered traj\n");
   int n = params->nb_points; // Nombre de points
+  parmas->nb_points_chemin = 0;
   params->chemin = (struct Point *)malloc(sizeof(struct Point) * n);
     for(int i=0; i<n; i++) {
       params->chemin[i].x = 0;
@@ -83,9 +84,8 @@ void Trajectory(struct PARAMS *params, Point point_final) {
   printf("---Calcul de trajectoire---\n");
   printf("Point Initial : %d, Point Final : %d\n", indice_pos_init,
          ix_pos_final);
-  int ix_pointActuel =
-      indice_pos_init; // indice du point de la carte correspondant à la
-                       // position actuelle de la voiture
+  int ix_pointActuel = indice_pos_init; // indice du point de la carte correspondant à la
+  // position actuelle de la voiture
   // génerer le chemin!
   ind = indice_pos_init;
   while ((ind % n) != ix_pos_final) {
@@ -93,6 +93,7 @@ void Trajectory(struct PARAMS *params, Point point_final) {
            params->carte[ind].y);
     params->chemin[indice].x = params->carte[ind].x;
     params->chemin[indice].y = params->carte[ind].y;
+    params->nb_points_chemin += 1;
     indice++;
     ind++;
     ind = ind % n;
