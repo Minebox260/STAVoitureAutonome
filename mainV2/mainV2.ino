@@ -318,8 +318,8 @@ void loop() {
     moteur(0,pwm[1],in1[1],in2[1]);
     return;
   }
-  moteur(30 - pwr,pwm[0],in1[0],in2[0]);
-  moteur(30 + pwr,pwm[1],in1[1],in2[1]);
+  moteur(30 + pwr,pwm[0],in1[0],in2[0]);
+  moteur(30 - pwr,pwm[1],in1[1],in2[1]);
   
   //Serial.println("end of loop");
 
