@@ -56,6 +56,7 @@ double evalu(int value, int target, float deltaT){
 void acknowledge() {
   delay(50);
   Serial.println("ACK");
+  Serial.flush();
   delay(50);
 };
 
@@ -68,6 +69,7 @@ void blink(int times, int pause) {
     digitalWrite(LED_BUILTIN, LOW);
     delay(pause);
   }
+  
 }
 
 void emptySerial() {
@@ -188,8 +190,9 @@ void loop() {
   //nothing received since the beginning
   else if (Serial.available() == 0 && !comm_established) {
     //we do nothing before we haven't received a next point
-    code = 0;
-    return;
+    if (DEBUG == false) {
+      return;
+    }
   } 
   //data received from the Raspberry
   else {
@@ -201,18 +204,15 @@ void loop() {
   
   if (code == 2) {
       //marvelmind doesn't work, motors have to be stopped
-      blink(10,50);
+      blink(5,50);
       acknowledge();
       comm_established = 1;
       stopCommand = true;   
   } 
   else if (code == 1) {
-      blink(10,50);
+      blink(5,50);
       
       acknowledge();
-
-      blink(10,50);
-
       comm_established = 1;
       
       while (Serial.available() < (4 * sizeof(int32_t))) {
@@ -248,7 +248,7 @@ void loop() {
       Serial.println(targetAngleInt);*/
       
       //debug code for checking the integers constructed
-      emptySerial();
+      //emptySerial();
 
       for(int j = 0; j < dataSize; j++) {
         char * intptr = (char*)&data[j];
@@ -341,7 +341,7 @@ void moteur(int valeur, int pwm, int in1, int in2)
     analogWrite(pwm,constrain( 0 ,0,0));
     return;
   }
-  analogWrite(pwm,constrain( abs(valeur) ,0,50));
+  analogWrite(pwm,constrain( abs(valeur) ,0,100));
   
 }
 
