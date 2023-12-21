@@ -189,6 +189,8 @@ void loop() {
   //nothing received since the beginning
   else if (Serial.available() == 0 && !comm_established) {
     //we do nothing before we haven't received a next point
+    code = 0;
+
     if (DEBUG == false) {
       return;
     }
