@@ -179,7 +179,7 @@ void setup() {
 
 void loop() {
   
-  blink(1,150);
+  //blink(1,150);
   updateGyro(); //continually updating gyro
 
   //nothing received this iteration but communication already established
@@ -340,7 +340,7 @@ void moteur(int valeur, int pwm, int in1, int in2)
     analogWrite(pwm,constrain( 0 ,0,0));
     return;
   }
-  analogWrite(pwm,constrain( abs(valeur) ,0,100));
+  analogWrite(pwm,constrain( abs(valeur) ,0,50));
   
 }
 
