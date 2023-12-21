@@ -85,8 +85,8 @@ void emptySerial() {
 const int enca[] = {18,19};
 const int encb[] = {31,38};
 const int pwm[] = {12,8};
-const int in1[] = {35,37};
-const int in2[] = {34,36};
+const int in2[] = {35,37};
+const int in1[] = {34,36};
 // Globals
 long prevT = 0;
 int posPrev[] = {0,0};
@@ -318,8 +318,8 @@ void loop() {
     moteur(0,pwm[1],in1[1],in2[1]);
     return;
   }
-  moteur(30 - pwr,pwm[0],in1[0],in2[0]);
-  moteur(30 + pwr,pwm[1],in1[1],in2[1]);
+  moteur(30 + pwr,pwm[0],in1[0],in2[0]);
+  moteur(30 - pwr,pwm[1],in1[1],in2[1]);
   
   //Serial.println("end of loop");
 
@@ -341,7 +341,7 @@ void moteur(int valeur, int pwm, int in1, int in2)
     analogWrite(pwm,constrain( 0 ,0,0));
     return;
   }
-  analogWrite(pwm,constrain( abs(valeur) ,0,100));
+  analogWrite(pwm,constrain( abs(valeur) ,0,80));
   
 }
 
